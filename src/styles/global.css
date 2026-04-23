@@ -1,0 +1,235 @@
+@import 'tailwindcss';
+@import './tokens.css';
+
+@theme {
+  --font-display: 'Söhne', 'Geist', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Söhne', 'Geist', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --color-bg: #0a0a0a;
+  --color-bg-raised: #121212;
+  --color-border: #1f1f1f;
+  --color-border-strong: #2a2a2a;
+  --color-fg: #f5f5f4;
+  --color-fg-muted: #7f7f78;
+  --color-fg-dim: #4f4f49;
+  --color-accent: #c9a46a;
+  --color-accent-hover: #d9b47a;
+  --color-accent-dim: #8f7448;
+}
+
+/* Geist (variable) — Latin */
+@font-face {
+  font-family: 'Geist';
+  src: url('/fonts/geist-latin.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Geist (variable) — Latin Extended */
+@font-face {
+  font-family: 'Geist';
+  src: url('/fonts/geist-latin-ext.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* Geist (variable) — Cyrillic */
+@font-face {
+  font-family: 'Geist';
+  src: url('/fonts/geist-cyrillic.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+/* JetBrains Mono — 400, Latin */
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono-400-latin.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212;
+}
+/* JetBrains Mono — 400, Cyrillic */
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono-400-cyrillic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* JetBrains Mono — 500, Latin */
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono-500-latin.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212;
+}
+/* JetBrains Mono — 500, Cyrillic */
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono-500-cyrillic.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+/* Base reset */
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+html {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'ss01', 'cv11';
+}
+body {
+  min-height: 100dvh;
+  font-size: 16px;
+  line-height: 1.5;
+}
+::selection {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+/* Focus */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Hairline grid utility */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, var(--color-border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-border) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* Bracket corner marks — operational UI accent */
+.bracket {
+  position: relative;
+}
+.bracket::before,
+.bracket::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-color: var(--color-accent);
+  pointer-events: none;
+}
+.bracket::before {
+  top: 0;
+  left: 0;
+  border-top: 1px solid;
+  border-left: 1px solid;
+}
+.bracket::after {
+  bottom: 0;
+  right: 0;
+  border-bottom: 1px solid;
+  border-right: 1px solid;
+}
+
+/* Scroll-reveal base */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 600ms var(--ease-standard),
+    transform 600ms var(--ease-standard);
+}
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Primary button */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border: 1px solid var(--color-accent);
+  background: transparent;
+  color: var(--color-accent);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  transition:
+    background 200ms var(--ease-standard),
+    color 200ms var(--ease-standard);
+  cursor: pointer;
+}
+.btn-primary:hover {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  color: var(--color-fg-muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  transition: color 200ms var(--ease-standard);
+  cursor: pointer;
+}
+.btn-ghost:hover {
+  color: var(--color-fg);
+}
+
+/* Eyebrow (monospace uppercase label, used above h2s) */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--color-fg-muted);
+}
+.eyebrow--accent {
+  color: var(--color-accent);
+}

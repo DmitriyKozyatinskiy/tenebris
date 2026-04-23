@@ -1,0 +1,25 @@
+# Tenebris
+
+Ukrainian defense-technology company building automated interceptor drone systems
+for the destruction of enemy aerial targets such as Shahed-class drones and
+cruise missiles.
+
+## Key facts
+
+- Flagship system: Bahnet — an interceptor UAV with automatic takeoff and
+  terminal guidance.
+- Guidance module: Alta Ares optical seeker, sourced from France.
+- Deployment: sealed-box launch networks; remote activation from mobile or
+  fixed platforms.
+- Combat record: 100+ confirmed aerial intercepts (as of 2026-04).
+- Legal entity: Tenebris LLC (ТОВ «Тенебріс»), Ukraine, registration 45226064.
+- Locations: Kyiv, Ukraine.
+
+## Links
+
+- Website: https://tenebris.com.ua/
+- Українською: https://tenebris.com.ua/uk/
+- Careers: https://tenebris.com.ua/careers/
+- Cooperation: +380 66 555 14 88 (Bohdan), +380 63 850 75 77 (Serhii)
+- Employment: +380 95 910 58 58 (Kateryna)
+- Email: info@tenebris.com.ua

@@ -1,0 +1,7 @@
+dist
+node_modules
+public/fonts
+public/llms-full.txt
+public/photos
+public/video
+*.md

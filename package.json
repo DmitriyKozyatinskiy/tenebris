@@ -1,0 +1,43 @@
+{
+  "name": "tenebris-landing",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "node scripts/generate-llms-full.mjs && astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "astro check",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "favicons": "node scripts/generate-favicons.mjs",
+    "media": "node scripts/process-media.mjs",
+    "og": "node scripts/generate-og-default.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.5.0",
+    "@iconify-json/lucide": "^1.2.102",
+    "@tailwindcss/vite": "^4.1.11",
+    "astro": "^6.1.8",
+    "astro-capo": "^0.0.1",
+    "astro-compressor": "^1.2.0",
+    "astro-icon": "^1.1.5",
+    "astro-robots-txt": "^1.0.0",
+    "astro-seo": "^1.1.0",
+    "astro-tunnel": "^0.1.8",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss": "^4.1.11"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@fontsource-variable/geist": "^5.2.8",
+    "@fontsource/jetbrains-mono": "^5.2.8",
+    "prettier": "^3.8.1",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "sharp": "^0.34.5",
+    "typescript": "^5.7.3"
+  }
+}
