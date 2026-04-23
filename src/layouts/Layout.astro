@@ -38,9 +38,20 @@ const schemas = [...buildBaseSchemas(locale), ...extra];
       rel="preload"
       as="font"
       type="font/woff2"
-      href={locale === 'uk' ? '/fonts/onest-cyrillic.woff2' : '/fonts/onest-latin.woff2'}
+      href="/fonts/onest-latin.woff2"
       crossorigin
     />
+    {
+      locale === 'uk' && (
+        <link
+          rel="preload"
+          as="font"
+          type="font/woff2"
+          href="/fonts/onest-cyrillic.woff2"
+          crossorigin
+        />
+      )
+    }
     <SEO
       title={title}
       description={description}

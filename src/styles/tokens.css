@@ -1,27 +1,11 @@
+/* Non-theme tokens. Colors and fonts live in global.css @theme, which
+ * Tailwind v4 auto-emits as CSS custom properties on :root.
+ * These tokens cover everything @theme does not (radii, easing, prefs). */
 @layer base {
   :root {
-    /* Color — three explicit roles, no more */
-    --color-bg: #0a0a0a;
-    --color-bg-raised: #121212;
-    --color-border: #1f1f1f;
-    --color-border-strong: #2a2a2a;
-    --color-fg: #f5f5f4;
-    --color-fg-muted: #7f7f78;
-    --color-fg-dim: #4f4f49;
-    --color-accent: #c9a46a;
-    --color-accent-hover: #d9b47a;
-    --color-accent-dim: #8f7448;
-
-    /* Typography */
-    --font-display: 'Söhne', 'Onest', ui-sans-serif, system-ui, sans-serif;
-    --font-sans: 'Söhne', 'Onest', ui-sans-serif, system-ui, sans-serif;
-    --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', 'Menlo', monospace;
-
-    /* Radii (operational, not rounded) */
     --radius-card: 4px;
     --radius-field: 2px;
 
-    /* Motion */
     --ease-standard: cubic-bezier(0.2, 0, 0, 1);
     --ease-emphasis: cubic-bezier(0.3, 0, 0, 1);
 
