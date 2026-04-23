@@ -6,8 +6,11 @@ import sitemap from '@astrojs/sitemap';
 import robotsTxt from 'astro-robots-txt';
 import compressor from 'astro-compressor';
 import tunnel from 'astro-tunnel';
+import indexnow from './src/integrations/indexnow.mjs';
 
 const isDev = process.env.NODE_ENV !== 'production';
+const isProd = process.env.NODE_ENV === 'production';
+const isCI = process.env.CI === 'true';
 
 export default defineConfig({
   site: 'https://tenebris.com.ua',
@@ -69,6 +72,9 @@ export default defineConfig({
     }),
     compressor({ gzip: true, brotli: true }),
     ...(isDev ? [tunnel()] : []),
+    // IndexNow only fires on production builds run in CI — avoids pinging
+    // Bing/Yandex/etc. every time a developer runs `npm run build` locally.
+    ...(isProd && isCI ? [indexnow({ verbose: false })] : []),
   ],
   vite: {
     // tailwindcss v4 plugin uses rolldown-flavored types; safe to pass through.

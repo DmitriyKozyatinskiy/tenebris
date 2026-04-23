@@ -75,6 +75,14 @@ Onest is used as the production font until Söhne is licensed. When Klim deliver
    - `*.html` → `Cache-Control: public, max-age=300, stale-while-revalidate=86400`
    - `/_astro/*`, `/fonts/*`, `/photos/*`, `/video/*`, `/icons/*`, `/favicon.*` → `max-age=31536000, immutable`
 
+## IndexNow
+
+After a production CI build (`NODE_ENV=production` + `CI=true`), `src/integrations/indexnow.mjs` reads the generated sitemap and POSTs every URL to `api.indexnow.org`. This fans out to Bing, Yandex, Seznam, Naver, Yep, and others — Google and Baidu ignore IndexNow and rely on their own crawlers.
+
+- **Key**: `9fa4bc4d38b1401b82dd2e0d2b087da6` (public — served at `/9fa4bc4d38b1401b82dd2e0d2b087da6.txt`).
+- **Scope**: triggers only on CI production builds so local `npm run build` runs don't spam the API.
+- **Rotation**: generate a new key with `openssl rand -hex 16`, rename `public/<old>.txt` → `public/<new>.txt`, and update `INDEXNOW_KEY` in `src/integrations/indexnow.mjs`. Search engines will accept the new key on the next submission; the old key can be deleted after the next successful ping.
+
 ## Source of truth
 
 - Landing content → `src/i18n/{locale}/pages/home.ts`
