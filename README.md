@@ -53,14 +53,15 @@ Append an entry to `src/data/press.ts` and the matching pullquote to both
 `src/i18n/en/press.ts` and `src/i18n/uk/press.ts`. Place the thumbnail in
 `public/photos/` (AVIF + WebP, 800w + 1600w variants).
 
-## Replacing the Söhne dev fallback
+## Replacing Onest with licensed Söhne
 
-Geist is used as a dev fallback for Söhne. When the Söhne license is purchased:
+Onest is used as the production font until Söhne is licensed. When Klim delivers the Söhne Web ZIP:
 
-1. Drop `soehne-*.woff2` files into `public/fonts/`.
-2. Add `@font-face` declarations for them in `src/styles/global.css` alongside the Geist ones.
-3. Delete the Geist files + Geist `@font-face` blocks.
-4. Reorder the stack in `--font-display` / `--font-sans` in `tokens.css` so `'Söhne'` comes first.
+1. Extract `soehne-web-buch.woff2`, `soehne-web-kraftig.woff2`, `soehne-web-halbfett.woff2` (and matching Cyrillic sub-files if Klim ships Character Set B as separate files) into `public/fonts/`.
+2. Add `@font-face` declarations for each weight in `src/styles/global.css`, mirroring the existing Onest blocks (one per unicode-range: latin, latin-ext, cyrillic, cyrillic-ext).
+3. Delete the `onest-*.woff2` files and their `@font-face` blocks.
+4. Remove the `@fontsource-variable/onest` dev dependency: `npm uninstall @fontsource-variable/onest`.
+5. The font stack in `tokens.css` and `global.css` `@theme` already has `'Söhne'` as the first fallback — no change needed, Söhne will just pick up automatically.
 
 ## Deployment — Cloudflare Pages
 

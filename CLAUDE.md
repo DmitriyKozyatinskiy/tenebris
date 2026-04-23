@@ -49,7 +49,7 @@ Shared context: every visitor arrives with *gravity*. This is a wartime product.
   - `--accent` = `#C9A46A` (muted amber — targeting reticle, stats, single hero highlight; used sparingly, never as a background, never in gradients)
   - Supporting grayscale: `--border` `#1F1F1F`, `--border-strong` `#2A2A2A`, `--fg-muted` `#7F7F78`, `--fg-dim` `#4F4F49`.
 - **Typography**:
-  - `--font-display` = Söhne Buch / Söhne Kräftig (headings, hero). Falls back to `Geist, ui-sans-serif` in development until commercial license is loaded.
+  - `--font-display` = Söhne Buch / Söhne Kräftig (headings, hero). Falls back to `Onest, ui-sans-serif` in development until commercial license is loaded.
   - `--font-sans` = Söhne (body text).
   - `--font-mono` = JetBrains Mono (data readouts, specs, section numbers, timestamps, coordinates).
 - **Motifs**:
@@ -202,7 +202,7 @@ Follow these deliberately from day one.
 
 - `build.inlineStylesheets: 'always'` in `astro.config.mjs` — no render-blocking CSS request.
 - No `client:*` directives. Ever. Use native HTML + inline `<script>` for anything interactive.
-- Self-host Söhne + JetBrains Mono + Geist (dev fallback) in `public/fonts/`. No Google Fonts.
+- Self-host Söhne + JetBrains Mono + Onest (dev fallback) in `public/fonts/`. No Google Fonts.
 - Third-party JS (GTM, analytics) defers to first user interaction or `requestIdleCallback` timeout. Never an unconditional `<script src>` in a layout.
 - The hero video is served as MP4 (H.264 baseline for compatibility) + WebM (VP9 or AV1) with a poster frame `.avif`. The video is `<video muted autoplay loop playsinline preload="metadata">` and is lazy-unpaused when in viewport.
 - Images are AVIF primary, WebP fallback, JPEG last — served with `<picture>` when the layout warrants it.
