@@ -5,12 +5,17 @@ automated interceptor drone systems. Production URL: `https://tenebris.com.ua`.
 
 See [`CLAUDE.md`](./CLAUDE.md) for the full design system, brand rules, and copy guidelines.
 
+## Requirements
+
+- **Node.js 24+** (pinned via `.nvmrc` and `package.json > engines`). If you use `nvm`, `nvm use` picks up the right version automatically.
+- `ffmpeg` on `$PATH` if you re-run `npm run media`.
+
 ## Commands
 
 ```bash
 npm install           # install deps (first time)
 npm run dev           # dev server at localhost:4321
-npm run build         # production build → dist/ (runs generate-llms-full first)
+npm run build         # production build → dist/
 npm run preview       # preview the built site
 npm run check         # astro check (TypeScript diagnostics)
 npm run format        # prettier --write .
@@ -68,7 +73,7 @@ Onest is used as the production font until Söhne is licensed. When Klim deliver
 ## Deployment — Cloudflare Pages
 
 1. Cloudflare dashboard → Pages → **Create** → **Connect to Git** → select repo.
-2. Build command: `npm run build`. Output directory: `dist`. Node: `20`.
+2. Build command: `npm run build`. Output directory: `dist`. The `.nvmrc` in the repo pins Node 24; no manual `NODE_VERSION` env var needed on new projects, though setting it explicitly is also fine.
 3. Add the environment variables listed above.
 4. Custom domain: `tenebris.com.ua` (apex); add `www.tenebris.com.ua` with a 301 redirect to apex.
 5. Recommended caching rules:
