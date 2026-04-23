@@ -26,5 +26,5 @@ export const contactPeople: readonly ContactPerson[] = [
   },
 ];
 
-export const formRecipientEmail = 's.bohdanovskyi@tenebristech.tech';
+export const formRecipientEmail = 'info@tenebris.com.ua';
 export const publicInboxEmail = 'info@tenebris.com.ua';
