@@ -95,7 +95,7 @@ Five principles that override any aesthetic opinion when they conflict. Use them
 5. **Ukrainian and English are equal citizens.** Never design in English first and translate after. Cyrillic glyph widths differ from Latin; the grid must accommodate both. Review every layout in both locales before declaring it done.
 
 **Hard bans (AI-slop prevention, enforced in linter):**
-- No em dashes (—) in copy. Use periods or restructure.
+- No em dashes (—) in **English** copy. Use periods, colons, or restructure. (Ukrainian тире is native punctuation for copula elision and apposition — keep it where grammar requires it; e.g. `«Багнет» — це дрон`.)
 - No `Inter`, `Roboto`, `Space Grotesk`, `Poppins`, `DM Sans` — even as fallback beyond `ui-sans-serif`.
 - No purple. No gradients. No glassmorphism. No "mesh" backgrounds.
 - No emojis in copy or file content.
@@ -231,7 +231,7 @@ Prettier with Astro + Tailwind plugins. Same config as the landing project: sing
 
 These are hard rules. Enforced in a post-edit linter.
 
-- Never use em dashes (—). Replace with period, comma, colon, or restructure the sentence.
+- Never use em dashes (—) in English copy. Replace with period, comma, colon, or restructure the sentence. (Ukrainian copy keeps the native тире where grammar requires it — see Design Context > Design Principles for the scoping rule.)
 - Never use the banned phrases from the Design Principles section above.
 - Paragraphs are 2-3 sentences max. No walls of text.
 - Every numeric claim must have a source or date next to it.

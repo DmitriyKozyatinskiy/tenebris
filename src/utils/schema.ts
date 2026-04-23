@@ -4,7 +4,7 @@ import { localeHtmlLang } from '../i18n/config';
 import { contactPeople, publicInboxEmail } from '../data/contacts';
 import { getSameAs } from '../data/social';
 import { type Role } from '../data/roles';
-import { roleTranslations } from '../i18n/translations';
+import { careerDetailTranslations, roleTranslations } from '../i18n/translations';
 import { press } from '../data/press';
 
 const SITE = 'https://tenebris.com.ua';
@@ -81,11 +81,13 @@ export function buildBreadcrumb(items: Array<{ name: string; path: string }>, _l
 
 export function buildJobPosting(role: Role, locale: Locale) {
   const strings = roleTranslations[locale][role.slug];
+  const detail = careerDetailTranslations[locale];
   const description = [
     `<p>${strings.mission}</p>`,
     `<p><b>${strings.teamLabel}</b></p>`,
+    `<p><b>${detail.responsibilitiesHeading}</b></p>`,
     `<ul>${strings.responsibilities.map((r) => `<li>${r}</li>`).join('')}</ul>`,
-    `<p><b>Requirements</b></p>`,
+    `<p><b>${detail.requirementsHeading}</b></p>`,
     `<ul>${strings.requirements.map((r) => `<li>${r}</li>`).join('')}</ul>`,
   ].join('');
 

@@ -62,7 +62,7 @@ export const roleStrings: Record<RoleSlug, RoleStrings> = {
     employmentLabel: 'Employment',
   },
   'combat-uav-pilot': {
-    title: 'Pilot — combat UAV',
+    title: 'Combat UAV pilot',
     teamLabel: 'Flight Operations',
     shortLine: 'Experienced combat UAV operator, ready to fly interceptors.',
     mission:
