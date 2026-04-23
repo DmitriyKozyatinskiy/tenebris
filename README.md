@@ -24,13 +24,15 @@ npm run og            # regenerate default OG image (/og-default.png)
 Set these in the hosting environment (Cloudflare Pages `Settings → Environment variables`).
 They are `PUBLIC_*` because they ship to the client.
 
-| Variable | Purpose |
-|---|---|
-| `PUBLIC_GTM_ID` | Google Tag Manager container ID, e.g. `GTM-XXXXXXX`. Omit to disable GTM entirely. |
-| `PUBLIC_WEB3FORMS_KEY` | Web3Forms access key for the contact form. Sign up at [web3forms.com](https://web3forms.com). |
-| `PUBLIC_SITE_URL` | Override the canonical origin (optional; defaults to `https://tenebris.com.ua`). |
+| Variable | Value | Purpose |
+|---|---|---|
+| `PUBLIC_GTM_ID` | `GTM-K5RK9QMJ` | Google Tag Manager container ID. Omit to disable GTM entirely. |
+| `PUBLIC_WEB3FORMS_KEY` | *(register per-domain)* | Web3Forms access key for the contact form. Sign up at [web3forms.com](https://web3forms.com). |
+| `PUBLIC_SITE_URL` | *(optional)* | Override the canonical origin (defaults to `https://tenebris.com.ua`). |
 
-If these are missing, the build still succeeds; GTM and form submission just will not work.
+See `.env.example` for a copyable template. Local dev reads `.env` (git-ignored); production reads Cloudflare Pages dashboard env vars.
+
+If any of these are missing, the build still succeeds — GTM and form submission just will not work on that environment.
 
 ## Adding a new locale
 
