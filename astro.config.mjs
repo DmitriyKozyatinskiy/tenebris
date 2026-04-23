@@ -74,7 +74,7 @@ export default defineConfig({
     ...(isDev ? [tunnel()] : []),
     // IndexNow only fires on production builds run in CI — avoids pinging
     // Bing/Yandex/etc. every time a developer runs `npm run build` locally.
-    ...(isProd && isCI ? [indexnow({ verbose: false })] : []),
+    ...(isProd && isCI ? [indexnow()] : []),
   ],
   vite: {
     // tailwindcss v4 plugin uses rolldown-flavored types; safe to pass through.

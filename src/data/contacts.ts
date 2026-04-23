@@ -26,5 +26,8 @@ export const contactPeople: readonly ContactPerson[] = [
   },
 ];
 
+// Two constants, same value today. Kept separate because they may diverge:
+// `formRecipientEmail` is the Web3Forms hidden destination (could become
+// e.g. `forms@` with auto-routing); `publicInboxEmail` is the visible mailto.
 export const formRecipientEmail = 'info@tenebris.com.ua';
 export const publicInboxEmail = 'info@tenebris.com.ua';

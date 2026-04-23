@@ -12,12 +12,13 @@
  */
 
 import { readFileSync, existsSync } from 'node:fs';
-import { join } from 'node:path';
+import { basename, join } from 'node:path';
 
 const INDEXNOW_ENDPOINT = 'https://api.indexnow.org/indexnow';
 const INDEXNOW_KEY = '9fa4bc4d38b1401b82dd2e0d2b087da6';
 const SITE_HOST = 'tenebris.com.ua';
 const KEY_LOCATION = `https://${SITE_HOST}/${INDEXNOW_KEY}.txt`;
+const FETCH_TIMEOUT_MS = 10_000;
 
 function extractLocs(xml) {
   const urls = [];
@@ -43,8 +44,9 @@ async function submit(urls) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json; charset=utf-8' },
       body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
     });
-    if (res.ok || res.status === 202) {
+    if (res.ok) {
       console.log(`[indexnow] submitted ${urls.length} URLs (status ${res.status})`);
     } else {
       const body = await res.text();
@@ -55,29 +57,24 @@ async function submit(urls) {
   }
 }
 
-export default function indexnow(options = {}) {
-  const { verbose = false } = options;
+export default function indexnow() {
   return {
     name: 'astro-indexnow',
     hooks: {
       'astro:build:done': async ({ dir }) => {
         const distPath = dir.pathname;
         const sitemapIndexPath = join(distPath, 'sitemap-index.xml');
-        const urls = [];
-
-        if (existsSync(sitemapIndexPath)) {
-          const indexXml = readFileSync(sitemapIndexPath, 'utf-8');
-          const sitemapRefs = extractLocs(indexXml);
-          for (const ref of sitemapRefs) {
-            const localPath = join(distPath, ref.split('/').pop());
-            if (!existsSync(localPath)) continue;
-            const xml = readFileSync(localPath, 'utf-8');
-            urls.push(...extractLocs(xml));
-            if (verbose) console.log(`[indexnow] ${localPath}: ${urls.length} URLs so far`);
-          }
-        } else {
+        if (!existsSync(sitemapIndexPath)) {
           console.warn('[indexnow] no sitemap-index.xml found; skipping');
           return;
+        }
+
+        const indexXml = readFileSync(sitemapIndexPath, 'utf-8');
+        const urls = [];
+        for (const ref of extractLocs(indexXml)) {
+          const localPath = join(distPath, basename(new URL(ref).pathname));
+          if (!existsSync(localPath)) continue;
+          urls.push(...extractLocs(readFileSync(localPath, 'utf-8')));
         }
 
         const unique = [...new Set(urls)];
