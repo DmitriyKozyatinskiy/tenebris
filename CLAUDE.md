@@ -49,9 +49,8 @@ Shared context: every visitor arrives with *gravity*. This is a wartime product.
   - `--accent` = `#C9A46A` (muted amber — targeting reticle, stats, single hero highlight; used sparingly, never as a background, never in gradients)
   - Supporting grayscale: `--border` `#1F1F1F`, `--border-strong` `#2A2A2A`, `--fg-muted` `#7F7F78`, `--fg-dim` `#4F4F49`.
 - **Typography**:
-  - `--font-display` = Söhne Buch / Söhne Kräftig (headings, hero). Falls back to `Onest, ui-sans-serif` in development until commercial license is loaded.
-  - `--font-sans` = Söhne (body text).
-  - `--font-mono` = JetBrains Mono (data readouts, specs, section numbers, timestamps, coordinates).
+  - `--font-display` / `--font-sans` stack = `'Söhne', 'Onest', ui-sans-serif, system-ui, sans-serif`. Söhne is the target once licensed; **Onest is the current production font** (SIL OFL, full Latin + Cyrillic, designed as an open-source grotesk with similar proportions to Söhne). Drop licensed Söhne `.woff2` into `public/fonts/` and add the `@font-face` blocks to activate — no other code changes needed.
+  - `--font-mono` = JetBrains Mono (data readouts, specs, section numbers, timestamps, coordinates). Full Latin + Cyrillic.
 - **Motifs**:
   - *Vertical light-beam* (echoes the logo) — used as a hairline accent where sections rise, as the hero's video composition, as an Ocasional divider.
   - *Fine hairline grids* (1px, `#1F1F1F`) overlayed on hero and stats — evokes targeting UI without being literal.
@@ -92,7 +91,7 @@ Five principles that override any aesthetic opinion when they conflict. Use them
 1. **Gravity over delight.** Every pixel should read like a tool. If a treatment makes the page feel fun, charming, or exciting, it is wrong. This is a weapons-system vendor. Delight lives in legibility, precision, and the absence of friction — never in decoration.
 2. **Real evidence over claim.** Stats must be paired with a source or a date. Photography must be real product or real operator. Press mentions go with outlet logos. We show, we don't tell. An empty section is better than a filler section.
 3. **Monochrome with one accent.** The amber `#C9A46A` is used *sparingly* — the rule of thumb is "one amber element per viewport at most." If you feel the need to reach for a second color, the design is wrong.
-4. **Mono for data, sans for language.** Every numeric quantity, unit, designation, coordinate, code, and timestamp is monospaced (JetBrains Mono). Everything the user reads as prose is in Söhne. This is non-negotiable — it is the site's signature.
+4. **Mono for data, sans for language.** Every numeric quantity, unit, designation, coordinate, code, and timestamp is monospaced (JetBrains Mono). Everything the user reads as prose is in the sans stack (Söhne when licensed, Onest today). This is non-negotiable — it is the site's signature.
 5. **Ukrainian and English are equal citizens.** Never design in English first and translate after. Cyrillic glyph widths differ from Latin; the grid must accommodate both. Review every layout in both locales before declaring it done.
 
 **Hard bans (AI-slop prevention, enforced in linter):**
@@ -202,7 +201,7 @@ Follow these deliberately from day one.
 
 - `build.inlineStylesheets: 'always'` in `astro.config.mjs` — no render-blocking CSS request.
 - No `client:*` directives. Ever. Use native HTML + inline `<script>` for anything interactive.
-- Self-host Söhne + JetBrains Mono + Onest (dev fallback) in `public/fonts/`. No Google Fonts.
+- Self-host Onest (current) + JetBrains Mono in `public/fonts/`. Söhne is added the same way once licensed. No Google Fonts.
 - Third-party JS (GTM, analytics) defers to first user interaction or `requestIdleCallback` timeout. Never an unconditional `<script src>` in a layout.
 - The hero video is served as MP4 (H.264 baseline for compatibility) + WebM (VP9 or AV1) with a poster frame `.avif`. The video is `<video muted autoplay loop playsinline preload="metadata">` and is lazy-unpaused when in viewport.
 - Images are AVIF primary, WebP fallback, JPEG last — served with `<picture>` when the layout warrants it.

@@ -1,5 +1,11 @@
 # Tenebris Landing Implementation Plan
 
+> **Historical snapshot.** This plan was executed on 2026-04-23. Do not use the steps below as the current recipe — refer to `README.md` and `CLAUDE.md` for the live setup. Notable drift since execution:
+>
+> - The open-source fallback font was **Geist** in the plan below; it is **Onest** in the shipped build. All `curl` steps for Geist files (§ 1.1 Step 1) are superseded by `npm install @fontsource-variable/onest` + `cp` from `node_modules`.
+> - `rolldown@1.0.0-rc.17` broke the Tailwind v4 plugin; the repo pins `rolldown@1.0.0-rc.15` via an `overrides` block in `package.json`. The plan does not mention this.
+> - Tokens live in `src/styles/global.css` `@theme` (Tailwind v4 auto-emits to `:root`); `src/styles/tokens.css` only carries non-theme tokens (`--radius-*`, `--ease-*`, `prefers-reduced-motion` override). The plan wrote these tokens twice.
+
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
 **Goal:** Build the production launch of `https://tenebris.com.ua` — a bilingual (EN default, UK) marketing + hiring site for a Ukrainian defense-tech company, deployed to Cloudflare Pages.

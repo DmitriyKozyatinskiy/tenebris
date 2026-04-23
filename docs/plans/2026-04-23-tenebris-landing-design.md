@@ -4,6 +4,11 @@
 **Domain**: `https://tenebris.com.ua`
 **Status**: approved, ready for implementation
 
+> **Historical snapshot.** This document captures the design as validated on 2026-04-23. For current state and any decisions that have drifted since, see `CLAUDE.md` and `README.md`.
+>
+> Notable drift since 2026-04-23:
+> - The open-source fallback used alongside Söhne was originally Geist; it was swapped for **Onest** (same role, better Cyrillic coverage, not tied to a vendor brand). All references to "Geist" in this document should be read as "Onest."
+
 This document captures the validated design and architecture for the Tenebris marketing landing site. It exists so that any engineer — or any future Claude Code session — can pick up the build without needing to rediscover decisions.
 
 See also: `CLAUDE.md` (project brief, design principles, hard rules).
