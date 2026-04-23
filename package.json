@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
-    "@fontsource-variable/geist": "^5.2.8",
+    "@fontsource-variable/onest": "^5.2.11",
     "@fontsource/jetbrains-mono": "^5.2.8",
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1",

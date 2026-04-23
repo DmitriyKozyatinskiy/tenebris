@@ -13,8 +13,8 @@
     --color-accent-dim: #8f7448;
 
     /* Typography */
-    --font-display: 'Söhne', 'Geist', ui-sans-serif, system-ui, sans-serif;
-    --font-sans: 'Söhne', 'Geist', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Söhne', 'Onest', ui-sans-serif, system-ui, sans-serif;
+    --font-sans: 'Söhne', 'Onest', ui-sans-serif, system-ui, sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', 'Menlo', monospace;
 
     /* Radii (operational, not rounded) */
