@@ -28,4 +28,10 @@ export const common: CommonTranslations = {
     home: 'Головна',
     careers: 'Кар’єра',
   },
+  consent: {
+    eyebrow: '[ COOKIES · ANALYTICS ]',
+    body: 'Ми використовуємо cookie для базової аналітики (Google Analytics 4), щоб розуміти, як використовується сайт. Без реклами та персональних даних.',
+    accept: 'Прийняти',
+    decline: 'Відхилити',
+  },
 };

@@ -1,10 +1,38 @@
 ---
+import { CONSENT_KEY, CONSENT_TYPES } from '../../scripts/consent';
+
 const id = import.meta.env.PUBLIC_GTM_ID ?? '';
 ---
 
 {
   id && (
     <>
+      <script is:inline define:vars={{ CONSENT_KEY, CONSENT_TYPES }}>
+        {`
+        (function () {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){ window.dataLayer.push(arguments); }
+          window.gtag = window.gtag || gtag;
+
+          function buildConsent(state) {
+            var out = {};
+            for (var i = 0; i < CONSENT_TYPES.length; i++) out[CONSENT_TYPES[i]] = state;
+            return out;
+          }
+
+          var defaults = buildConsent('denied');
+          defaults.security_storage = 'granted';
+          defaults.wait_for_update = 500;
+          gtag('consent', 'default', defaults);
+
+          var stored = null;
+          try { stored = JSON.parse(localStorage.getItem(CONSENT_KEY) || 'null'); } catch (e) {}
+          if (stored && stored.granted === true) {
+            gtag('consent', 'update', buildConsent('granted'));
+          }
+        })();
+        `}
+      </script>
       <script is:inline define:vars={{ id }}>
         {`
         (function () {
@@ -12,7 +40,6 @@ const id = import.meta.env.PUBLIC_GTM_ID ?? '';
           function load() {
             if (loaded) return;
             loaded = true;
-            window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({ 'gtm.start': Date.now(), event: 'gtm.js' });
             var s = document.createElement('script');
             s.async = true;

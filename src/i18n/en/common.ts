@@ -26,6 +26,12 @@ export interface CommonTranslations {
     home: string;
     careers: string;
   };
+  consent: {
+    eyebrow: string;
+    body: string;
+    accept: string;
+    decline: string;
+  };
 }
 
 export const common: CommonTranslations = {
@@ -55,5 +61,11 @@ export const common: CommonTranslations = {
   breadcrumbs: {
     home: 'Home',
     careers: 'Careers',
+  },
+  consent: {
+    eyebrow: '[ COOKIES · ANALYTICS ]',
+    body: 'We use cookies for basic analytics (Google Analytics 4) to understand how this site is used. No ad targeting, no personal data.',
+    accept: 'Accept',
+    decline: 'Decline',
   },
 };

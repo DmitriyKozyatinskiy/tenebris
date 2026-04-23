@@ -5,6 +5,7 @@ import Schema from '../components/astro/Schema.astro';
 import Header from '../components/astro/Header.astro';
 import Footer from '../components/astro/Footer.astro';
 import DeferredGTM from '../components/astro/DeferredGTM.astro';
+import ConsentBanner from '../components/astro/ConsentBanner.astro';
 import { buildBaseSchemas } from '../utils/schema';
 import { toLocale } from '../i18n/utils';
 import { localeHtmlLang } from '../i18n/config';
@@ -74,6 +75,7 @@ const schemas = [...buildBaseSchemas(locale), ...extra];
       <slot />
     </main>
     <Footer locale={locale} />
+    <ConsentBanner locale={locale} />
 
     <script>
       import { initScrollReveal } from '../scripts/scroll-reveal';

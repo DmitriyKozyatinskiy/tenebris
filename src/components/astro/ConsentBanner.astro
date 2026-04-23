@@ -1,0 +1,67 @@
+---
+import { commonTranslations } from '../../i18n/common';
+import { CONSENT_KEY, CONSENT_TYPES } from '../../scripts/consent';
+import type { Locale } from '../../i18n/types';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = commonTranslations[locale].consent;
+---
+
+<aside
+  id="consent-banner"
+  data-consent-banner
+  hidden
+  aria-live="polite"
+  aria-label="Cookie consent"
+  class="fixed right-4 bottom-4 left-4 z-50 mx-auto max-w-md p-5 sm:right-6 sm:bottom-6 sm:left-auto"
+  style="background:var(--color-bg-raised);border:1px solid var(--color-border-strong);"
+>
+  <div class="eyebrow mb-3">{t.eyebrow}</div>
+  <p class="mb-5 text-sm leading-relaxed" style="color:var(--color-fg);">{t.body}</p>
+  <div class="flex flex-wrap items-center gap-3">
+    <button type="button" class="btn-primary" data-consent-action="accept">
+      {t.accept}
+    </button>
+    <button type="button" class="btn-ghost" data-consent-action="decline">
+      {t.decline}
+    </button>
+  </div>
+</aside>
+
+<script is:inline define:vars={{ CONSENT_KEY, CONSENT_TYPES }}>
+  (function () {
+    var el = document.querySelector('[data-consent-banner]');
+    if (!el) return;
+
+    var stored = null;
+    try {
+      stored = JSON.parse(localStorage.getItem(CONSENT_KEY) || 'null');
+    } catch (e) {}
+
+    if (!stored) el.hidden = false;
+
+    function decide(granted) {
+      try {
+        localStorage.setItem(CONSENT_KEY, JSON.stringify({ granted: granted, ts: Date.now() }));
+      } catch (e) {}
+      var state = granted ? 'granted' : 'denied';
+      var update = {};
+      for (var i = 0; i < CONSENT_TYPES.length; i++) update[CONSENT_TYPES[i]] = state;
+      if (typeof window.gtag === 'function') {
+        window.gtag('consent', 'update', update);
+      }
+      el.hidden = true;
+    }
+
+    el.addEventListener('click', function (e) {
+      var target = e.target;
+      if (!(target instanceof Element)) return;
+      var btn = target.closest('[data-consent-action]');
+      if (!btn) return;
+      decide(btn.getAttribute('data-consent-action') === 'accept');
+    });
+  })();
+</script>
