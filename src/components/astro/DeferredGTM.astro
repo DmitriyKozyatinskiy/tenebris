@@ -8,7 +8,6 @@ const id = import.meta.env.PUBLIC_GTM_ID ?? '';
   id && (
     <>
       <script is:inline define:vars={{ CONSENT_KEY, CONSENT_TYPES }}>
-        {`
         (function () {
           window.dataLayer = window.dataLayer || [];
           function gtag(){ window.dataLayer.push(arguments); }
@@ -31,10 +30,8 @@ const id = import.meta.env.PUBLIC_GTM_ID ?? '';
             gtag('consent', 'update', buildConsent('granted'));
           }
         })();
-        `}
       </script>
       <script is:inline define:vars={{ id }}>
-        {`
         (function () {
           var loaded = false;
           function load() {
@@ -55,7 +52,6 @@ const id = import.meta.env.PUBLIC_GTM_ID ?? '';
             setTimeout(load, 5000);
           }
         })();
-        `}
       </script>
       <noscript>
         <iframe
