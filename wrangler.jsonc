@@ -1,30 +1,17 @@
 /**
- * Cloudflare Workers — Static Assets mode.
- *
- * This is NOT a Worker with code. The project has no main/entry-point and no
- * Astro SSR adapter. Cloudflare uploads `dist/` and serves it directly from the
- * edge, the same way Cloudflare Pages does, just packaged as a Workers deploy
- * because Cloudflare has unified the two products behind `wrangler deploy`.
- *
- * Do not add `main` or an Astro adapter. If you need server-rendered routes
- * later, add `@astrojs/cloudflare`, set `output: 'server'`, and point `main`
- * at the adapter's entrypoint.
+ * Assets-only deploy. No `main` field → no Worker executes. If we ever add
+ * SSR, install `@astrojs/cloudflare`, set `output: 'server'`, and point
+ * `main` at the adapter entrypoint.
  */
 {
-	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "tenebris",
-	"compatibility_date": "2026-04-23",
-	"assets": {
-		"directory": "./dist",
-		/* Astro emits /careers/index.html etc. Auto-trailing-slash handles both
-		 * `/careers` and `/careers/` URLs gracefully. Matches our
-		 * `trailingSlash: 'always'` Astro config. */
-		"html_handling": "auto-trailing-slash",
-		/* Serve dist/404.html on any unmatched path instead of the default
-		 * Cloudflare 404 page. */
-		"not_found_handling": "404-page"
-	},
-	"observability": {
-		"enabled": true
-	}
+  "$schema": "https://unpkg.com/wrangler/config-schema.json",
+  "name": "tenebris",
+  "compatibility_date": "2026-04-23",
+  "assets": {
+    "directory": "./dist",
+    // Matches Astro's `trailingSlash: 'always'`: /careers and /careers/ both
+    // resolve to dist/careers/index.html.
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  }
 }

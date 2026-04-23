@@ -1,0 +1,7 @@
+# Wrangler reads this before upload. astro-compressor emits .br/.gz/.zst
+# sidecars alongside every HTML/CSS/JS/TXT/XML file, which are useful for
+# CDNs that skip their own compression. Cloudflare Workers Static Assets
+# re-encodes at the edge, so the sidecars are dead weight in uploads.
+*.br
+*.gz
+*.zst
