@@ -1,0 +1,33 @@
+---
+import { locales, type Locale } from '../../i18n/types';
+import { localizeUrl, getPathnameLocaleStripped } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const stripped = getPathnameLocaleStripped(Astro.url.pathname);
+---
+
+<div
+  class="flex items-center gap-1 font-mono text-xs tracking-[0.2em] text-[--color-fg-muted] uppercase"
+>
+  {
+    locales.map((l, i) => (
+      <>
+        {i > 0 && <span class="text-[--color-fg-dim]">·</span>}
+        {l === locale ? (
+          <span class="text-[--color-fg]">{l}</span>
+        ) : (
+          <a
+            href={localizeUrl(stripped, l)}
+            hreflang={l}
+            class="transition-colors hover:text-[--color-accent]"
+          >
+            {l}
+          </a>
+        )}
+      </>
+    ))
+  }
+</div>

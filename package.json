@@ -18,8 +18,8 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.5.0",
     "@iconify-json/lucide": "^1.2.102",
-    "@tailwindcss/vite": "^4.1.11",
-    "astro": "^6.1.8",
+    "@tailwindcss/vite": "4.2.2",
+    "astro": "6.1.8",
     "astro-capo": "^0.0.1",
     "astro-compressor": "^1.2.0",
     "astro-icon": "^1.1.5",
@@ -28,7 +28,10 @@
     "astro-tunnel": "^0.1.8",
     "clsx": "^2.1.1",
     "tailwind-merge": "^3.3.1",
-    "tailwindcss": "^4.1.11"
+    "tailwindcss": "4.1.11"
+  },
+  "overrides": {
+    "rolldown": "1.0.0-rc.15"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",

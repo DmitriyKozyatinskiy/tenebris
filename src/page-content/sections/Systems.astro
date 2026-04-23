@@ -1,0 +1,81 @@
+---
+import Container from '../../components/astro/Container.astro';
+import Section from '../../components/astro/Section.astro';
+import SectionHeader from '../../components/astro/SectionHeader.astro';
+import { systemSpecKeys } from '../../data/systems';
+import { systemStrings as sysEn } from '../../i18n/en/systems';
+import { systemStrings as sysUk } from '../../i18n/uk/systems';
+import { home as homeEn } from '../../i18n/en/pages/home';
+import { home as homeUk } from '../../i18n/uk/pages/home';
+import type { Locale } from '../../i18n/types';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = locale === 'uk' ? homeUk : homeEn;
+const sys = locale === 'uk' ? sysUk : sysEn;
+---
+
+<Section id="systems">
+  <Container>
+    <SectionHeader
+      eyebrow={t.systems.eyebrow}
+      heading={t.systems.heading}
+      intro={t.systems.intro}
+    />
+    <div class="grid gap-10 lg:grid-cols-2 lg:gap-16">
+      <!-- Spec table -->
+      <div class="order-2 lg:order-1" data-reveal>
+        <dl class="border-t border-[--color-border]">
+          {
+            systemSpecKeys.map((k) => (
+              <div class="grid grid-cols-[120px_1fr] gap-6 border-b border-[--color-border] py-5 sm:grid-cols-[160px_1fr] sm:py-6">
+                <dt class="font-mono text-xs tracking-[0.2em] text-[--color-fg-muted] uppercase">
+                  {sys.specLabels[k]}
+                </dt>
+                <dd class="font-display text-base text-[--color-fg] sm:text-lg">
+                  {sys.specValues[k]}
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+
+      <!-- Photo -->
+      <div class="order-1 lg:order-2" data-reveal>
+        <div class="relative">
+          <div
+            class="pointer-events-none absolute -top-2 -left-2 h-6 w-6 border-t border-l border-[--color-accent]"
+            aria-hidden="true"
+          >
+          </div>
+          <div
+            class="pointer-events-none absolute -right-2 -bottom-2 h-6 w-6 border-r border-b border-[--color-accent]"
+            aria-hidden="true"
+          >
+          </div>
+          <picture>
+            <source
+              type="image/avif"
+              srcset="/photos/420478_111_new_960x1140_0-800.avif 800w, /photos/420478_111_new_960x1140_0-1600.avif 1600w"
+              sizes="(min-width: 1024px) 50vw, 100vw"
+            />
+            <img
+              src="/photos/420478_111_new_960x1140_0-1600.webp"
+              srcset="/photos/420478_111_new_960x1140_0-800.webp 800w, /photos/420478_111_new_960x1140_0-1600.webp 1600w"
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              alt={t.systems.imgAlt}
+              width="1600"
+              height="1900"
+              loading="lazy"
+              decoding="async"
+              class="block h-auto w-full border border-[--color-border] bg-[--color-bg-raised] object-cover"
+            />
+          </picture>
+        </div>
+      </div>
+    </div>
+  </Container>
+</Section>

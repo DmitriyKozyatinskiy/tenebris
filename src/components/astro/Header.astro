@@ -1,0 +1,101 @@
+---
+import { Icon } from 'astro-icon/components';
+import LanguageSwitch from './LanguageSwitch.astro';
+import { commonTranslations } from '../../i18n/common';
+import { localizeUrl } from '../../i18n/utils';
+import type { Locale } from '../../i18n/types';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = commonTranslations[locale];
+const links = [
+  { href: localizeUrl('/#systems', locale), label: t.nav.systems },
+  { href: localizeUrl('/#advantages', locale), label: t.nav.advantages },
+  { href: localizeUrl('/#training', locale), label: t.nav.training },
+  { href: localizeUrl('/#press', locale), label: t.nav.press },
+  { href: localizeUrl('/careers/', locale), label: t.nav.careers },
+  { href: localizeUrl('/#contact', locale), label: t.nav.contact },
+];
+---
+
+<header
+  class="sticky top-0 z-40 border-b border-[--color-border] bg-[--color-bg]/80 backdrop-blur-sm"
+>
+  <div class="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <a
+      href={localizeUrl('/', locale)}
+      class="flex items-center gap-2.5"
+      aria-label="Tenebris home"
+    >
+      <img src="/favicon.svg" alt="" width="22" height="22" aria-hidden="true" />
+      <span class="font-display text-sm font-semibold tracking-[0.2em] text-[--color-fg]">
+        TENEBRIS
+      </span>
+    </a>
+    <nav aria-label="Primary" class="hidden items-center gap-5 md:flex">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class="font-mono text-xs tracking-[0.2em] text-[--color-fg-muted] uppercase transition-colors hover:text-[--color-fg]"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+    <div class="flex items-center gap-4">
+      <LanguageSwitch locale={locale} />
+      <button
+        class="md:hidden"
+        aria-label={t.a11y.openMenu}
+        popovertarget="mobile-menu"
+      >
+        <Icon name="lucide:menu" class="h-5 w-5 text-[--color-fg]" />
+      </button>
+    </div>
+  </div>
+  <div
+    id="mobile-menu"
+    popover="auto"
+    class="m-0 h-dvh w-full bg-[--color-bg] p-6 text-[--color-fg] md:hidden"
+  >
+    <div class="flex items-center justify-between">
+      <span class="font-display text-sm font-semibold tracking-[0.2em]">TENEBRIS</span>
+      <button
+        popovertarget="mobile-menu"
+        popovertargetaction="hide"
+        aria-label={t.a11y.closeMenu}
+      >
+        <Icon name="lucide:x" class="h-5 w-5" />
+      </button>
+    </div>
+    <nav class="mt-10 flex flex-col gap-4">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class="font-display text-2xl font-semibold tracking-tight"
+            data-mobile-close
+          >
+            {link.label}
+          </a>
+        ))
+      }
+      <div class="mt-6 border-t border-[--color-border] pt-6">
+        <LanguageSwitch locale={locale} />
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('[data-mobile-close]').forEach((el) => {
+    el.addEventListener('click', () => {
+      const menu = document.getElementById('mobile-menu') as HTMLElement & { hidePopover?: () => void };
+      if (menu?.hidePopover) menu.hidePopover();
+    });
+  });
+</script>

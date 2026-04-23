@@ -1,0 +1,41 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from './sections/Hero.astro';
+import Proof from './sections/Proof.astro';
+import Systems from './sections/Systems.astro';
+import Advantages from './sections/Advantages.astro';
+import Training from './sections/Training.astro';
+import Press from './sections/Press.astro';
+import Careers from './sections/Careers.astro';
+import Contact from './sections/Contact.astro';
+import { defaultLocale } from '../i18n/config';
+import { toLocale } from '../i18n/utils';
+import { home as homeEn } from '../i18n/en/pages/home';
+import { home as homeUk } from '../i18n/uk/pages/home';
+import { buildPressItemList } from '../utils/schema';
+
+interface Props {
+  locale?: string;
+}
+const { locale: rawLocale = defaultLocale } = Astro.props;
+const locale = toLocale(rawLocale);
+const t = locale === 'uk' ? homeUk : homeEn;
+
+const pageSchemas = [buildPressItemList(locale)];
+---
+
+<Layout
+  title={t.meta.title}
+  description={t.meta.description}
+  locale={locale}
+  schemas={pageSchemas}
+>
+  <Hero locale={locale} />
+  <Proof locale={locale} />
+  <Systems locale={locale} />
+  <Advantages locale={locale} />
+  <Training locale={locale} />
+  <Press locale={locale} />
+  <Careers locale={locale} />
+  <Contact locale={locale} />
+</Layout>

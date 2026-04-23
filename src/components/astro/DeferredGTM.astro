@@ -1,0 +1,44 @@
+---
+const id = import.meta.env.PUBLIC_GTM_ID ?? '';
+---
+
+{
+  id && (
+    <>
+      <script is:inline define:vars={{ id }}>
+        {`
+        (function () {
+          var loaded = false;
+          function load() {
+            if (loaded) return;
+            loaded = true;
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({ 'gtm.start': Date.now(), event: 'gtm.js' });
+            var s = document.createElement('script');
+            s.async = true;
+            s.src = 'https://www.googletagmanager.com/gtm.js?id=' + id;
+            document.head.appendChild(s);
+          }
+          ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(function (e) {
+            window.addEventListener(e, load, { once: true, passive: true });
+          });
+          if ('requestIdleCallback' in window) {
+            requestIdleCallback(load, { timeout: 5000 });
+          } else {
+            setTimeout(load, 5000);
+          }
+        })();
+        `}
+      </script>
+      <noscript>
+        <iframe
+          src={`https://www.googletagmanager.com/ns.html?id=${id}`}
+          height="0"
+          width="0"
+          style="display:none;visibility:hidden"
+          title="gtm"
+        />
+      </noscript>
+    </>
+  )
+}

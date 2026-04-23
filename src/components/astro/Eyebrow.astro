@@ -1,0 +1,11 @@
+---
+interface Props {
+  accent?: boolean;
+  className?: string;
+}
+const { accent = false, className = '' } = Astro.props;
+---
+
+<div class={`eyebrow ${accent ? 'eyebrow--accent' : ''} ${className}`}>
+  <slot />
+</div>

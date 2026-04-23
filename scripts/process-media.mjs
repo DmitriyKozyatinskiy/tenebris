@@ -10,26 +10,33 @@ const PHOTO_SRC = '/Users/dkoziatynskyi/Downloads/tenebris photos';
 mkdirSync(resolve(ROOT, 'public/video'), { recursive: true });
 mkdirSync(resolve(ROOT, 'public/photos'), { recursive: true });
 
-/* ---------- Video ---------- */
+/* ---------- Video ----------
+ * Source has an Instagram watermark in the top-right corner. We remove it
+ * with ffmpeg's `delogo` filter, which interpolates surrounding pixels over
+ * the rectangle — cleaner than a hard black box overlay. */
 const mp4 = resolve(ROOT, 'public/video/hero-loop.mp4');
 const webm = resolve(ROOT, 'public/video/hero-loop.webm');
 const poster = resolve(ROOT, 'public/video/hero-poster.avif');
 
+// Watermark bounding box at native 720x1280: top-right vertical strip.
+const DELOGO = 'delogo=x=610:y=10:w=100:h=400';
+const VF = `${DELOGO},scale=-2:1280`;
+
 console.log('Transcoding MP4…');
 execSync(
-  `ffmpeg -y -i "${SRC_VIDEO}" -c:v libx264 -crf 26 -preset slow -pix_fmt yuv420p -an -vf "scale=-2:1280" -movflags +faststart "${mp4}"`,
+  `ffmpeg -y -i "${SRC_VIDEO}" -c:v libx264 -crf 26 -preset slow -pix_fmt yuv420p -an -vf "${VF}" -movflags +faststart "${mp4}"`,
   { stdio: 'inherit' },
 );
 
 console.log('Transcoding WebM…');
 execSync(
-  `ffmpeg -y -i "${SRC_VIDEO}" -c:v libvpx-vp9 -crf 34 -b:v 0 -row-mt 1 -an -vf "scale=-2:1280" "${webm}"`,
+  `ffmpeg -y -i "${SRC_VIDEO}" -c:v libvpx-vp9 -crf 34 -b:v 0 -row-mt 1 -an -vf "${VF}" "${webm}"`,
   { stdio: 'inherit' },
 );
 
 console.log('Extracting AVIF poster…');
 execSync(
-  `ffmpeg -y -ss 2 -i "${SRC_VIDEO}" -frames:v 1 -vf "scale=-2:1280" "${poster}.png"`,
+  `ffmpeg -y -ss 2 -i "${SRC_VIDEO}" -frames:v 1 -vf "${VF}" "${poster}.png"`,
   { stdio: 'inherit' },
 );
 await sharp(`${poster}.png`).avif({ quality: 60 }).toFile(poster);

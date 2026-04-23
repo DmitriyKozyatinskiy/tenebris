@@ -1,0 +1,51 @@
+---
+import Container from '../../components/astro/Container.astro';
+import Section from '../../components/astro/Section.astro';
+import SectionHeader from '../../components/astro/SectionHeader.astro';
+import { stats } from '../../data/stats';
+import { statStrings as statsEn } from '../../i18n/en/stats';
+import { statStrings as statsUk } from '../../i18n/uk/stats';
+import { home as homeEn } from '../../i18n/en/pages/home';
+import { home as homeUk } from '../../i18n/uk/pages/home';
+import type { Locale } from '../../i18n/types';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = locale === 'uk' ? homeUk : homeEn;
+const ss = locale === 'uk' ? statsUk : statsEn;
+---
+
+<Section id="proof">
+  <Container>
+    <SectionHeader eyebrow={t.proof.eyebrow} heading={t.proof.heading} />
+    <div class="grid grid-cols-1 border-t border-[--color-border] sm:grid-cols-3">
+      {
+        stats.map((stat, i) => (
+          <div
+            class:list={[
+              'relative py-10 sm:py-12',
+              i > 0 && 'sm:border-l sm:border-[--color-border]',
+              i > 0 && 'border-t border-[--color-border] sm:border-t-0',
+              'sm:px-8',
+            ]}
+            data-reveal
+          >
+            <div class="font-mono text-6xl font-medium tracking-tight text-[--color-fg] sm:text-7xl lg:text-8xl">
+              {stat.value}
+            </div>
+            <div class="mt-3 font-mono text-xs tracking-[0.2em] text-[--color-fg-muted] uppercase">
+              {ss[stat.id].label}
+            </div>
+            {ss[stat.id].footnote && (
+              <div class="mt-1 font-mono text-[10px] tracking-[0.2em] text-[--color-fg-dim] uppercase">
+                {ss[stat.id].footnote}
+              </div>
+            )}
+          </div>
+        ))
+      }
+    </div>
+  </Container>
+</Section>

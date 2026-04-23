@@ -1,0 +1,56 @@
+---
+import { SEO as AstroSEO } from 'astro-seo';
+import { getHreflangAlternates, getPathnameLocaleStripped, localizeUrl } from '../../i18n/utils';
+import { localeHtmlLang } from '../../i18n/config';
+import type { Locale } from '../../i18n/types';
+
+interface Props {
+  title: string;
+  description: string;
+  locale: Locale;
+  pathname: string;
+  ogImage?: string;
+}
+
+const { title, description, locale, pathname, ogImage = '/og-default.png' } = Astro.props;
+const site = 'https://tenebris.com.ua';
+const stripped = getPathnameLocaleStripped(pathname);
+const canonical = `${site}${localizeUrl(stripped, locale)}`;
+const hreflangs = getHreflangAlternates(pathname);
+---
+
+<AstroSEO
+  title={title}
+  description={description}
+  canonical={canonical}
+  openGraph={{
+    basic: {
+      title,
+      type: 'website',
+      image: `${site}${ogImage}`,
+      url: canonical,
+    },
+    optional: {
+      description,
+      siteName: 'Tenebris',
+      locale: localeHtmlLang[locale],
+    },
+  }}
+  twitter={{
+    card: 'summary_large_image',
+    title,
+    description,
+    image: `${site}${ogImage}`,
+  }}
+  extend={{
+    link: hreflangs.map((h) => ({
+      rel: 'alternate',
+      hreflang: h.hreflang,
+      href: h.href,
+    })),
+    meta: [
+      { name: 'theme-color', content: '#0a0a0a' },
+      { name: 'format-detection', content: 'telephone=no' },
+    ],
+  }}
+/>

@@ -1,0 +1,262 @@
+---
+import { Icon } from 'astro-icon/components';
+import Container from '../../components/astro/Container.astro';
+import Section from '../../components/astro/Section.astro';
+import SectionHeader from '../../components/astro/SectionHeader.astro';
+import { contactPeople, formRecipientEmail, publicInboxEmail } from '../../data/contacts';
+import { home as homeEn } from '../../i18n/en/pages/home';
+import { home as homeUk } from '../../i18n/uk/pages/home';
+import { commonTranslations } from '../../i18n/common';
+import type { Locale } from '../../i18n/types';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = locale === 'uk' ? homeUk : homeEn;
+const common = commonTranslations[locale];
+const web3Key = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? 'YOUR_WEB3FORMS_ACCESS_KEY';
+---
+
+<Section id="contact">
+  <Container>
+    <SectionHeader eyebrow={t.contact.eyebrow} heading={t.contact.heading} intro={t.contact.intro} />
+
+    <div class="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16">
+      <!-- FORM -->
+      <form
+        id="contact-form"
+        method="POST"
+        action="https://api.web3forms.com/submit"
+        class="space-y-6"
+        novalidate
+        data-reveal
+      >
+        <input type="hidden" name="access_key" value={web3Key} />
+        <input type="hidden" name="email" value={formRecipientEmail} />
+        <input type="hidden" name="subject" id="form-subject" value={t.contact.form.subjectByPurpose.cooperation} />
+        <input type="hidden" name="redirect" id="form-redirect" value="" />
+        <input type="hidden" name="from_name" value="Tenebris · Contact Form" />
+        <!-- Honeypot -->
+        <div class="hidden" aria-hidden="true">
+          <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <div>
+          <label for="name" class="mb-2 block font-mono text-xs tracking-[0.2em] text-[--color-fg-muted] uppercase">
+            {t.contact.form.name} <span class="text-[--color-accent]" aria-hidden="true">*</span>
+            <span class="sr-only">{common.form.required}</span>
+          </label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            required
+            autocomplete="name"
+            class="w-full border border-[--color-border] bg-[--color-bg-raised] px-4 py-3 font-sans text-base text-[--color-fg] transition-colors focus:border-[--color-accent] focus:outline-none"
+          />
+        </div>
+
+        <div>
+          <label for="email" class="mb-2 block font-mono text-xs tracking-[0.2em] text-[--color-fg-muted] uppercase">
+            {t.contact.form.email} <span class="text-[--color-accent]" aria-hidden="true">*</span>
+            <span class="sr-only">{common.form.required}</span>
+          </label>
+          <input
+            id="email"
+            name="email_contact"
+            type="email"
+            required
+            autocomplete="email"
+            class="w-full border border-[--color-border] bg-[--color-bg-raised] px-4 py-3 font-sans text-base text-[--color-fg] transition-colors focus:border-[--color-accent] focus:outline-none"
+          />
+        </div>
+
+        <div>
+          <label for="organization" class="mb-2 block font-mono text-xs tracking-[0.2em] text-[--color-fg-muted] uppercase">
+            {t.contact.form.organization}
+            <span class="ml-1 text-[--color-fg-dim]">({t.contact.form.organizationOptional})</span>
+          </label>
+          <input
+            id="organization"
+            name="organization"
+            type="text"
+            autocomplete="organization"
+            class="w-full border border-[--color-border] bg-[--color-bg-raised] px-4 py-3 font-sans text-base text-[--color-fg] transition-colors focus:border-[--color-accent] focus:outline-none"
+          />
+        </div>
+
+        <fieldset>
+          <legend class="mb-3 font-mono text-xs tracking-[0.2em] text-[--color-fg-muted] uppercase">
+            {t.contact.form.purpose}
+          </legend>
+          <div class="flex flex-wrap gap-x-6 gap-y-3">
+            {
+              (['cooperation', 'employment', 'press', 'other'] as const).map((p, i) => (
+                <label class="flex items-center gap-2 font-sans text-sm text-[--color-fg]">
+                  <input
+                    type="radio"
+                    name="purpose"
+                    value={p}
+                    checked={i === 0}
+                    data-purpose-radio
+                    class="h-4 w-4 accent-[--color-accent]"
+                  />
+                  {t.contact.form.purposeOptions[p]}
+                </label>
+              ))
+            }
+          </div>
+        </fieldset>
+
+        <div>
+          <label for="message" class="mb-2 block font-mono text-xs tracking-[0.2em] text-[--color-fg-muted] uppercase">
+            {t.contact.form.message} <span class="text-[--color-accent]" aria-hidden="true">*</span>
+            <span class="sr-only">{common.form.required}</span>
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            required
+            rows="6"
+            class="w-full border border-[--color-border] bg-[--color-bg-raised] px-4 py-3 font-sans text-base text-[--color-fg] transition-colors focus:border-[--color-accent] focus:outline-none resize-y min-h-[140px]"
+          ></textarea>
+        </div>
+
+        <div
+          id="form-message"
+          class="hidden border border-[--color-border] bg-[--color-bg-raised] p-4 font-mono text-sm text-[--color-fg]"
+          role="alert"
+          aria-live="polite"
+          data-success-msg={common.form.success}
+          data-error-msg={common.form.error}
+        >
+        </div>
+
+        <button
+          id="form-submit"
+          type="submit"
+          class="btn-primary"
+          data-sending-text={common.form.sending}
+        >
+          {t.contact.form.submit}
+          <Icon name="lucide:arrow-right" class="h-4 w-4" />
+        </button>
+
+        <!-- Subject-by-purpose data for JS pickup -->
+        <script
+          is:inline
+          type="application/json"
+          id="subject-map"
+          set:html={JSON.stringify(t.contact.form.subjectByPurpose)}
+        />
+      </form>
+
+      <!-- DIRECT CONTACTS -->
+      <div class="space-y-8" data-reveal>
+        <div>
+          <div class="font-mono text-xs tracking-[0.2em] text-[--color-accent] uppercase">
+            {t.contact.directHeading}
+          </div>
+          <ul class="mt-6 space-y-6">
+            {
+              contactPeople.map((person) => (
+                <li class="border-t border-[--color-border] pt-5">
+                  <div class="font-mono text-[11px] tracking-[0.2em] text-[--color-fg-muted] uppercase">
+                    {t.contact.peopleRoleLabel[person.purpose]}
+                  </div>
+                  <div class="mt-1 font-display text-lg font-medium text-[--color-fg]">
+                    {t.contact.peopleNames[person.nameKey]}
+                  </div>
+                  <a
+                    href={`tel:${person.phoneTel}`}
+                    class="mt-1 inline-flex items-center gap-2 font-mono text-sm text-[--color-fg] transition-colors hover:text-[--color-accent]"
+                  >
+                    <Icon name="lucide:phone" class="h-3.5 w-3.5" />
+                    {person.phone}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="border-t border-[--color-border] pt-6">
+          <div class="font-mono text-[11px] tracking-[0.2em] text-[--color-fg-muted] uppercase">
+            {t.contact.mailLabel}
+          </div>
+          <a
+            href={`mailto:${publicInboxEmail}`}
+            class="mt-2 inline-flex items-center gap-2 font-mono text-sm text-[--color-fg] transition-colors hover:text-[--color-accent]"
+          >
+            <Icon name="lucide:mail" class="h-3.5 w-3.5" />
+            {publicInboxEmail}
+          </a>
+        </div>
+
+        <div class="border-t border-[--color-border] pt-6">
+          <div class="font-mono text-[11px] tracking-[0.2em] text-[--color-fg-muted] uppercase">
+            HQ
+          </div>
+          <div class="mt-2 font-mono text-sm text-[--color-fg]">
+            {t.contact.cityLine}
+          </div>
+        </div>
+      </div>
+    </div>
+  </Container>
+</Section>
+
+<script>
+  interface SubjectMap {
+    cooperation: string;
+    employment: string;
+    press: string;
+    other: string;
+  }
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const subjectInput = document.getElementById('form-subject') as HTMLInputElement | null;
+  const redirectInput = document.getElementById('form-redirect') as HTMLInputElement | null;
+  const submitBtn = document.getElementById('form-submit') as HTMLButtonElement | null;
+  const messageEl = document.getElementById('form-message') as HTMLElement | null;
+  const subjectMapEl = document.getElementById('subject-map') as HTMLScriptElement | null;
+  const radios = document.querySelectorAll<HTMLInputElement>('[data-purpose-radio]');
+
+  if (form && subjectInput && subjectMapEl) {
+    let subjects: SubjectMap | null = null;
+    try {
+      subjects = JSON.parse(subjectMapEl.textContent || '{}') as SubjectMap;
+    } catch (e) {
+      subjects = null;
+    }
+    radios.forEach((radio) => {
+      radio.addEventListener('change', () => {
+        const key = radio.value as keyof SubjectMap;
+        if (subjects && subjects[key]) subjectInput.value = subjects[key];
+      });
+    });
+  }
+
+  if (redirectInput) {
+    redirectInput.value = `${window.location.origin}${window.location.pathname}?submitted=1#contact`;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('submitted') === '1' && messageEl) {
+    messageEl.textContent = messageEl.dataset.successMsg || 'Received.';
+    messageEl.classList.remove('hidden');
+    messageEl.style.borderColor = 'var(--color-accent)';
+    messageEl.style.color = 'var(--color-accent)';
+    const u = new URL(window.location.href);
+    u.searchParams.delete('submitted');
+    history.replaceState({}, '', u.toString());
+  }
+
+  if (form && submitBtn) {
+    form.addEventListener('submit', () => {
+      submitBtn.disabled = true;
+      const sendingText = submitBtn.dataset.sendingText || 'Sending…';
+      submitBtn.textContent = sendingText;
+    });
+  }
+</script>

@@ -155,20 +155,23 @@ body {
   border-right: 1px solid;
 }
 
-/* Scroll-reveal base */
-[data-reveal] {
+/* Scroll-reveal base.
+ * Content is visible by default (progressive enhancement). JS adds `.js` to
+ * <html> once it runs, at which point we hide then fade in as elements enter
+ * the viewport. If JS never runs, content stays visible — no empty section. */
+.js [data-reveal] {
   opacity: 0;
   transform: translateY(12px);
   transition:
     opacity 600ms var(--ease-standard),
     transform 600ms var(--ease-standard);
 }
-[data-reveal].is-visible {
+.js [data-reveal].is-visible {
   opacity: 1;
   transform: translateY(0);
 }
 @media (prefers-reduced-motion: reduce) {
-  [data-reveal] {
+  .js [data-reveal] {
     opacity: 1;
     transform: none;
     transition: none;

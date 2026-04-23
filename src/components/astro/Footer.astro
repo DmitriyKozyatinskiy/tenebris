@@ -1,0 +1,32 @@
+---
+import { commonTranslations } from '../../i18n/common';
+import { getLegalEntity } from '../../i18n/entities';
+import type { Locale } from '../../i18n/types';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = commonTranslations[locale];
+const entity = getLegalEntity(locale);
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-[--color-border] bg-[--color-bg] py-12">
+  <div
+    class="mx-auto flex max-w-6xl flex-col gap-8 px-4 sm:px-6 md:flex-row md:items-start md:justify-between lg:px-8"
+  >
+    <div class="flex items-start gap-3">
+      <img src="/favicon.svg" alt="" width="32" height="32" aria-hidden="true" />
+      <div class="space-y-1 font-mono text-xs tracking-[0.2em] text-[--color-fg-muted] uppercase">
+        <div class="text-[--color-fg]">{entity.tradingName}</div>
+        <div>{entity.legalName}</div>
+        <div>{t.footer.registrationLabel}: {entity.registrationNumber}</div>
+        <div>{entity.city}, {entity.country}</div>
+      </div>
+    </div>
+    <div class="font-mono text-xs tracking-[0.2em] text-[--color-fg-muted] uppercase">
+      © {year} {entity.tradingName}. {t.footer.rights}
+    </div>
+  </div>
+</footer>

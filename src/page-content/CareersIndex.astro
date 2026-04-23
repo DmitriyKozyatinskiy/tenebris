@@ -1,0 +1,99 @@
+---
+import { Icon } from 'astro-icon/components';
+import Layout from '../layouts/Layout.astro';
+import Container from '../components/astro/Container.astro';
+import Section from '../components/astro/Section.astro';
+import Breadcrumb from '../components/astro/Breadcrumb.astro';
+import Eyebrow from '../components/astro/Eyebrow.astro';
+import { roles } from '../data/roles';
+import { roleStrings as rolesEn } from '../i18n/en/roles';
+import { roleStrings as rolesUk } from '../i18n/uk/roles';
+import { careersIndex as careersIndexEn } from '../i18n/en/pages/careers';
+import { careersIndex as careersIndexUk } from '../i18n/uk/pages/careers';
+import { commonTranslations } from '../i18n/common';
+import { defaultLocale } from '../i18n/config';
+import { localizeUrl, toLocale } from '../i18n/utils';
+import { buildBreadcrumb, buildJobPosting } from '../utils/schema';
+
+interface Props {
+  locale?: string;
+}
+const { locale: rawLocale = defaultLocale } = Astro.props;
+const locale = toLocale(rawLocale);
+const t = locale === 'uk' ? careersIndexUk : careersIndexEn;
+const common = commonTranslations[locale];
+const rs = locale === 'uk' ? rolesUk : rolesEn;
+
+const crumbs = [
+  { name: common.breadcrumbs.home, path: localizeUrl('/', locale) },
+  { name: common.breadcrumbs.careers, path: localizeUrl('/careers/', locale) },
+];
+const crumbSchema = buildBreadcrumb(crumbs, locale);
+const jobPostings = roles.map((r) => buildJobPosting(r, locale));
+---
+
+<Layout
+  title={t.meta.title}
+  description={t.meta.description}
+  locale={locale}
+  schemas={[crumbSchema, ...jobPostings]}
+>
+  <Section border={false}>
+    <Container>
+      <Breadcrumb
+        className="mb-12"
+        items={[
+          { label: common.breadcrumbs.home, href: localizeUrl('/', locale) },
+          { label: common.breadcrumbs.careers },
+        ]}
+      />
+      <div class="max-w-3xl" data-reveal>
+        <Eyebrow accent>{t.hero.eyebrow}</Eyebrow>
+        <h1
+          class="font-display mt-3 text-4xl leading-tight font-semibold tracking-tight sm:text-5xl lg:text-6xl"
+        >
+          {t.hero.h1}
+        </h1>
+        <p class="mt-6 max-w-2xl text-base leading-relaxed text-[--color-fg-muted] sm:text-lg">
+          {t.hero.intro}
+        </p>
+      </div>
+
+      <ol class="mt-16 border-t border-[--color-border]">
+        {
+          roles.map((role, i) => (
+            <li class="border-b border-[--color-border]">
+              <a
+                href={localizeUrl(`/careers/${role.slug}/`, locale)}
+                class="group grid grid-cols-[48px_1fr_auto] items-center gap-4 py-6 transition-colors hover:bg-[--color-bg-raised] sm:grid-cols-[60px_1fr_auto] sm:gap-8 sm:py-8"
+                data-reveal
+              >
+                <span class="font-mono text-xs tracking-[0.2em] text-[--color-fg-dim] uppercase sm:text-sm">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <div class="min-w-0">
+                  <h2 class="font-display text-xl font-semibold tracking-tight text-[--color-fg] sm:text-2xl">
+                    {rs[role.slug].title}
+                  </h2>
+                  <p class="mt-1 text-sm text-[--color-fg-muted] sm:text-base">
+                    {rs[role.slug].shortLine}
+                  </p>
+                  <div class="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] tracking-[0.2em] text-[--color-fg-dim] uppercase">
+                    <span>{rs[role.slug].teamLabel}</span>
+                    <span>·</span>
+                    <span>{role.baseLocation}</span>
+                    <span>·</span>
+                    <span>{role.employmentType.replace('_', ' ')}</span>
+                  </div>
+                </div>
+                <span class="font-mono text-xs tracking-[0.2em] text-[--color-fg-muted] uppercase transition-colors group-hover:text-[--color-accent]">
+                  <Icon name="lucide:arrow-right" class="h-4 w-4" />
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </Container>
+  </Section>
+</Layout>

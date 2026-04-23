@@ -1,0 +1,114 @@
+---
+import { Icon } from 'astro-icon/components';
+import Container from '../../components/astro/Container.astro';
+import Eyebrow from '../../components/astro/Eyebrow.astro';
+import { localizeUrl } from '../../i18n/utils';
+import type { Locale } from '../../i18n/types';
+import { home as homeEn } from '../../i18n/en/pages/home';
+import { home as homeUk } from '../../i18n/uk/pages/home';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = locale === 'uk' ? homeUk : homeEn;
+---
+
+<section class="relative overflow-hidden bg-[--color-bg]" aria-labelledby="hero-heading">
+  <!-- Hairline grid backdrop -->
+  <div class="bg-grid pointer-events-none absolute inset-0 opacity-[0.12]" aria-hidden="true">
+  </div>
+  <!-- Corner brackets -->
+  <div
+    class="pointer-events-none absolute top-6 left-6 h-6 w-6 border-t border-l border-[--color-accent]/40"
+    aria-hidden="true"
+  >
+  </div>
+  <div
+    class="pointer-events-none absolute right-6 bottom-6 h-6 w-6 border-r border-b border-[--color-accent]/40"
+    aria-hidden="true"
+  >
+  </div>
+
+  <Container className="relative">
+    <div
+      class="grid min-h-[92svh] items-center gap-10 py-20 pt-16 sm:pt-20 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16 lg:py-0"
+    >
+      <!-- Copy -->
+      <div class="relative z-10 flex flex-col justify-center" data-reveal>
+        <Eyebrow accent className="mb-6">{t.hero.eyebrow}</Eyebrow>
+        <h1
+          id="hero-heading"
+          class="font-display text-4xl leading-[1.05] font-semibold tracking-tight text-[--color-fg] sm:text-5xl md:text-6xl lg:text-7xl"
+        >
+          {t.hero.h1}
+        </h1>
+        <p class="mt-6 max-w-xl text-base leading-relaxed text-[--color-fg-muted] sm:text-lg">
+          {t.hero.sub}
+        </p>
+        <div class="mt-10 flex flex-wrap items-center gap-4">
+          <a href={localizeUrl('/#contact', locale)} class="btn-primary">
+            {t.hero.primaryCta}
+            <Icon name="lucide:arrow-right" class="h-4 w-4" />
+          </a>
+          <a href={localizeUrl('/#systems', locale)} class="btn-ghost">
+            {t.hero.secondaryCta}
+            <Icon name="lucide:chevron-down" class="h-4 w-4" />
+          </a>
+        </div>
+      </div>
+
+      <!-- Video — vertical orientation -->
+      <div class="relative z-0 mx-auto w-full max-w-[360px] lg:mx-0 lg:max-w-none">
+        <div
+          class="relative aspect-[9/16] w-full overflow-hidden border border-[--color-border] bg-black"
+        >
+          <!-- Telemetry markers -->
+          <div
+            class="pointer-events-none absolute top-3 left-3 font-mono text-[10px] tracking-[0.2em] text-[--color-accent] uppercase"
+            aria-hidden="true"
+          >
+            TNB · CAM 01
+          </div>
+          <div
+            class="pointer-events-none absolute right-3 bottom-3 font-mono text-[10px] tracking-[0.2em] text-[--color-fg-muted] uppercase"
+            aria-hidden="true"
+          >
+            LAUNCH · SEQ
+          </div>
+          <video
+            class="h-full w-full object-cover"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            poster="/video/hero-poster.avif"
+            aria-label={t.systems.imgAlt}
+          >
+            <source src="/video/hero-loop.webm" type="video/webm" />
+            <source src="/video/hero-loop.mp4" type="video/mp4" />
+          </video>
+          <!-- Subtle scan line -->
+          <div
+            class="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,transparent_98%,rgba(201,164,106,0.06)_100%)]"
+            aria-hidden="true"
+          >
+          </div>
+        </div>
+      </div>
+    </div>
+  </Container>
+</section>
+
+<script is:inline>
+  // Respect reduced motion: hide video, keep poster.
+  (function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.querySelectorAll('video').forEach((v) => {
+        v.removeAttribute('autoplay');
+        v.pause();
+      });
+    }
+  })();
+</script>

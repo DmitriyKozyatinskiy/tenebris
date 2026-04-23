@@ -1,0 +1,64 @@
+---
+import { Icon } from 'astro-icon/components';
+import Container from '../../components/astro/Container.astro';
+import Section from '../../components/astro/Section.astro';
+import SectionHeader from '../../components/astro/SectionHeader.astro';
+import { roles } from '../../data/roles';
+import { roleStrings as rolesEn } from '../../i18n/en/roles';
+import { roleStrings as rolesUk } from '../../i18n/uk/roles';
+import { home as homeEn } from '../../i18n/en/pages/home';
+import { home as homeUk } from '../../i18n/uk/pages/home';
+import { localizeUrl } from '../../i18n/utils';
+import type { Locale } from '../../i18n/types';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = locale === 'uk' ? homeUk : homeEn;
+const rs = locale === 'uk' ? rolesUk : rolesEn;
+---
+
+<Section id="careers">
+  <Container>
+    <SectionHeader
+      eyebrow={t.careers.eyebrow}
+      heading={t.careers.heading}
+      intro={t.careers.intro}
+    />
+    <ol class="border-t border-[--color-border]">
+      {
+        roles.map((role, i) => (
+          <li class="border-b border-[--color-border]">
+            <a
+              href={localizeUrl(`/careers/${role.slug}/`, locale)}
+              class="group grid grid-cols-[48px_1fr_auto] items-center gap-4 py-6 transition-colors hover:bg-[--color-bg-raised] sm:grid-cols-[60px_1fr_auto] sm:gap-8 sm:py-8"
+              data-reveal
+            >
+              <span class="font-mono text-xs tracking-[0.2em] text-[--color-fg-dim] uppercase sm:text-sm">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <div class="min-w-0">
+                <h3 class="font-display text-xl font-semibold tracking-tight text-[--color-fg] sm:text-2xl">
+                  {rs[role.slug].title}
+                </h3>
+                <p class="mt-1 text-sm text-[--color-fg-muted] sm:text-base">
+                  {rs[role.slug].shortLine}
+                </p>
+              </div>
+              <span class="font-mono text-xs tracking-[0.2em] text-[--color-fg-muted] uppercase transition-colors group-hover:text-[--color-accent]">
+                <Icon name="lucide:arrow-right" class="h-4 w-4" />
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+    <div class="mt-10">
+      <a href={localizeUrl('/careers/', locale)} class="btn-ghost">
+        {t.careers.seeAll}
+        <Icon name="lucide:arrow-right" class="h-4 w-4" />
+      </a>
+    </div>
+  </Container>
+</Section>

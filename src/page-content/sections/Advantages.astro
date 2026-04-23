@@ -1,0 +1,61 @@
+---
+import { Icon } from 'astro-icon/components';
+import Container from '../../components/astro/Container.astro';
+import Section from '../../components/astro/Section.astro';
+import SectionHeader from '../../components/astro/SectionHeader.astro';
+import { advantages } from '../../data/advantages';
+import { advantageStrings as advEn } from '../../i18n/en/advantages';
+import { advantageStrings as advUk } from '../../i18n/uk/advantages';
+import { home as homeEn } from '../../i18n/en/pages/home';
+import { home as homeUk } from '../../i18n/uk/pages/home';
+import type { Locale } from '../../i18n/types';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = locale === 'uk' ? homeUk : homeEn;
+const adv = locale === 'uk' ? advUk : advEn;
+---
+
+<Section id="advantages">
+  <Container>
+    <SectionHeader eyebrow={t.advantages.eyebrow} heading={t.advantages.heading} />
+    <div
+      class="grid grid-cols-1 border-t border-[--color-border] sm:grid-cols-2 lg:grid-cols-3"
+    >
+      {
+        advantages.map((a) => {
+          return (
+            <div
+              class:list={[
+                'group relative p-8 lg:p-10',
+                'border-b border-[--color-border]',
+                '[&:not(:nth-child(3n))]:lg:border-r',
+                '[&:not(:nth-child(2n))]:sm:border-r [&:nth-child(3n)]:sm:border-r-0',
+                'lg:[&:nth-child(2n)]:border-r',
+              ]}
+              data-reveal
+            >
+              <div class="flex items-start justify-between">
+                <span class="font-mono text-xs tracking-[0.2em] text-[--color-accent] uppercase">
+                  [ {a.n} ]
+                </span>
+                <Icon
+                  name={a.iconName}
+                  class="h-5 w-5 text-[--color-fg-muted] transition-colors group-hover:text-[--color-accent]"
+                />
+              </div>
+              <h3 class="font-display mt-8 text-xl font-semibold tracking-tight text-[--color-fg] sm:text-2xl">
+                {adv[a.id].title}
+              </h3>
+              <p class="mt-4 text-sm leading-relaxed text-[--color-fg-muted] sm:text-base">
+                {adv[a.id].description}
+              </p>
+            </div>
+          );
+        })
+      }
+    </div>
+  </Container>
+</Section>

@@ -1,0 +1,25 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Container from '../components/astro/Container.astro';
+import Eyebrow from '../components/astro/Eyebrow.astro';
+---
+
+<Layout title="404 · Not found · Tenebris" description="Page not found." locale="en">
+  <section class="flex min-h-[70svh] items-center">
+    <Container>
+      <Eyebrow accent>[ 404 · TARGET NOT FOUND ]</Eyebrow>
+      <h1
+        class="font-display mt-3 text-4xl leading-tight font-semibold tracking-tight sm:text-5xl lg:text-6xl"
+      >
+        That page is not in our network.
+      </h1>
+      <p class="mt-4 max-w-xl text-base leading-relaxed text-[--color-fg-muted] sm:text-lg">
+        The URL you entered does not exist. Return home and try again.
+      </p>
+      <div class="mt-10 flex flex-wrap gap-4">
+        <a href="/" class="btn-primary">Home</a>
+        <a href="/careers/" class="btn-ghost">Careers</a>
+      </div>
+    </Container>
+  </section>
+</Layout>

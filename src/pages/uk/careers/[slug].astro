@@ -1,0 +1,12 @@
+---
+import CareerDetail from '../../../page-content/CareerDetail.astro';
+import { roles } from '../../../data/roles';
+
+export function getStaticPaths() {
+  return roles.map((r) => ({ params: { slug: r.slug } }));
+}
+
+const { slug } = Astro.params;
+---
+
+<CareerDetail locale="uk" slug={slug!} />
