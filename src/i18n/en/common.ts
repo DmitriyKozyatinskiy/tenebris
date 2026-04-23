@@ -7,25 +7,14 @@ export interface CommonTranslations {
     careers: string;
     contact: string;
   };
-  cta: {
-    requestCooperation: string;
-    viewSystems: string;
-    applyRole: string;
-    seeAllRoles: string;
-    contactUs: string;
-    sendMessage: string;
-    back: string;
-  };
   footer: {
     rights: string;
     registrationLabel: string;
   };
   a11y: {
     skipToContent: string;
-    switchLanguage: string;
     openMenu: string;
     closeMenu: string;
-    external: string;
   };
   form: {
     required: string;
@@ -48,25 +37,14 @@ export const common: CommonTranslations = {
     careers: 'Careers',
     contact: 'Contact',
   },
-  cta: {
-    requestCooperation: 'Request cooperation',
-    viewSystems: 'View systems',
-    applyRole: 'Apply',
-    seeAllRoles: 'All open roles',
-    contactUs: 'Contact',
-    sendMessage: 'Send',
-    back: 'Back',
-  },
   footer: {
     rights: 'All rights reserved.',
     registrationLabel: 'Registration',
   },
   a11y: {
     skipToContent: 'Skip to content',
-    switchLanguage: 'Switch language',
     openMenu: 'Open menu',
     closeMenu: 'Close menu',
-    external: 'Opens in new tab',
   },
   form: {
     required: '(required)',

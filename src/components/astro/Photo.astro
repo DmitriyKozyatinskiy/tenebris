@@ -1,0 +1,40 @@
+---
+interface Props {
+  baseName: string;
+  alt: string;
+  width: number;
+  height: number;
+  sizes: string;
+  widths?: readonly number[];
+  className?: string;
+  loading?: 'eager' | 'lazy';
+}
+const {
+  baseName,
+  alt,
+  width,
+  height,
+  sizes,
+  widths = [800, 1600],
+  className = '',
+  loading = 'lazy',
+} = Astro.props;
+
+const srcset = (ext: 'avif' | 'webp') =>
+  widths.map((w) => `/photos/${baseName}-${w}.${ext} ${w}w`).join(', ');
+const fallback = `/photos/${baseName}-${widths[widths.length - 1]}.webp`;
+---
+
+<picture>
+  <source type="image/avif" srcset={srcset('avif')} sizes={sizes} />
+  <source type="image/webp" srcset={srcset('webp')} sizes={sizes} />
+  <img
+    src={fallback}
+    alt={alt}
+    width={width}
+    height={height}
+    loading={loading}
+    decoding="async"
+    class={`block h-auto w-full border border-[--color-border] bg-[--color-bg-raised] object-cover ${className}`}
+  />
+</picture>

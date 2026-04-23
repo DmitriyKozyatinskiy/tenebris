@@ -4,21 +4,17 @@ import Container from '../../components/astro/Container.astro';
 import Eyebrow from '../../components/astro/Eyebrow.astro';
 import { localizeUrl } from '../../i18n/utils';
 import type { Locale } from '../../i18n/types';
-import { home as homeEn } from '../../i18n/en/pages/home';
-import { home as homeUk } from '../../i18n/uk/pages/home';
+import { homeTranslations } from '../../i18n/translations';
 
 interface Props {
   locale: Locale;
 }
 const { locale } = Astro.props;
-const t = locale === 'uk' ? homeUk : homeEn;
+const t = homeTranslations[locale];
 ---
 
 <section class="relative overflow-hidden bg-[--color-bg]" aria-labelledby="hero-heading">
-  <!-- Hairline grid backdrop -->
-  <div class="bg-grid pointer-events-none absolute inset-0 opacity-[0.12]" aria-hidden="true">
-  </div>
-  <!-- Corner brackets -->
+  <div class="bg-grid pointer-events-none absolute inset-0 opacity-[0.12]" aria-hidden="true"></div>
   <div
     class="pointer-events-none absolute top-6 left-6 h-6 w-6 border-t border-l border-[--color-accent]/40"
     aria-hidden="true"
@@ -34,7 +30,6 @@ const t = locale === 'uk' ? homeUk : homeEn;
     <div
       class="grid min-h-[92svh] items-center gap-10 py-20 pt-16 sm:pt-20 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16 lg:py-0"
     >
-      <!-- Copy -->
       <div class="relative z-10 flex flex-col justify-center" data-reveal>
         <Eyebrow accent className="mb-6">{t.hero.eyebrow}</Eyebrow>
         <h1
@@ -58,12 +53,10 @@ const t = locale === 'uk' ? homeUk : homeEn;
         </div>
       </div>
 
-      <!-- Video — vertical orientation -->
       <div class="relative z-0 mx-auto w-full max-w-[360px] lg:mx-0 lg:max-w-none">
         <div
           class="relative aspect-[9/16] w-full overflow-hidden border border-[--color-border] bg-black"
         >
-          <!-- Telemetry markers -->
           <div
             class="pointer-events-none absolute top-3 left-3 font-mono text-[10px] tracking-[0.2em] text-[--color-accent] uppercase"
             aria-hidden="true"
@@ -77,19 +70,18 @@ const t = locale === 'uk' ? homeUk : homeEn;
             LAUNCH · SEQ
           </div>
           <video
+            id="hero-video"
             class="h-full w-full object-cover"
-            autoplay
             muted
             loop
             playsinline
             preload="metadata"
             poster="/video/hero-poster.avif"
-            aria-label={t.systems.imgAlt}
+            aria-label="Tenebris interceptor drone launch sequence."
           >
             <source src="/video/hero-loop.webm" type="video/webm" />
             <source src="/video/hero-loop.mp4" type="video/mp4" />
           </video>
-          <!-- Subtle scan line -->
           <div
             class="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,transparent_98%,rgba(201,164,106,0.06)_100%)]"
             aria-hidden="true"
@@ -102,13 +94,17 @@ const t = locale === 'uk' ? homeUk : homeEn;
 </section>
 
 <script is:inline>
-  // Respect reduced motion: hide video, keep poster.
+  // Gate autoplay on reduced-motion AND reduced-data to avoid unwanted fetches
+  // over metered connections. Without this gate, `autoplay` as a static attribute
+  // would begin downloading before any client-side check could intervene.
   (function () {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      document.querySelectorAll('video').forEach((v) => {
-        v.removeAttribute('autoplay');
-        v.pause();
-      });
-    }
+    var v = document.getElementById('hero-video');
+    if (!v) return;
+    var motion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var data = window.matchMedia('(prefers-reduced-data: reduce)').matches;
+    if (motion || data) return;
+    v.play().catch(function () {
+      /* autoplay denied by policy — poster remains */
+    });
   })();
 </script>

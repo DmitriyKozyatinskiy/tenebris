@@ -6,37 +6,34 @@ import Section from '../components/astro/Section.astro';
 import Breadcrumb from '../components/astro/Breadcrumb.astro';
 import Eyebrow from '../components/astro/Eyebrow.astro';
 import { roles } from '../data/roles';
-import { roleStrings as rolesEn } from '../i18n/en/roles';
-import { roleStrings as rolesUk } from '../i18n/uk/roles';
-import { careersIndex as careersIndexEn } from '../i18n/en/pages/careers';
-import { careersIndex as careersIndexUk } from '../i18n/uk/pages/careers';
+import { careersIndexTranslations, roleTranslations } from '../i18n/translations';
 import { commonTranslations } from '../i18n/common';
-import { defaultLocale } from '../i18n/config';
 import { localizeUrl, toLocale } from '../i18n/utils';
 import { buildBreadcrumb, buildJobPosting } from '../utils/schema';
 
 interface Props {
   locale?: string;
 }
-const { locale: rawLocale = defaultLocale } = Astro.props;
-const locale = toLocale(rawLocale);
-const t = locale === 'uk' ? careersIndexUk : careersIndexEn;
+const locale = toLocale(Astro.props.locale);
+const t = careersIndexTranslations[locale];
 const common = commonTranslations[locale];
-const rs = locale === 'uk' ? rolesUk : rolesEn;
+const rs = roleTranslations[locale];
 
 const crumbs = [
   { name: common.breadcrumbs.home, path: localizeUrl('/', locale) },
   { name: common.breadcrumbs.careers, path: localizeUrl('/careers/', locale) },
 ];
-const crumbSchema = buildBreadcrumb(crumbs, locale);
-const jobPostings = roles.map((r) => buildJobPosting(r, locale));
+const schemas = [
+  buildBreadcrumb(crumbs, locale),
+  ...roles.map((r) => buildJobPosting(r, locale)),
+];
 ---
 
 <Layout
   title={t.meta.title}
   description={t.meta.description}
   locale={locale}
-  schemas={[crumbSchema, ...jobPostings]}
+  schemas={schemas}
 >
   <Section border={false}>
     <Container>

@@ -9,25 +9,14 @@ export const common: CommonTranslations = {
     careers: 'Кар’єра',
     contact: 'Контакти',
   },
-  cta: {
-    requestCooperation: 'Запит на співпрацю',
-    viewSystems: 'Докладніше',
-    applyRole: 'Відгукнутись',
-    seeAllRoles: 'Усі відкриті вакансії',
-    contactUs: 'Контакти',
-    sendMessage: 'Надіслати',
-    back: 'Назад',
-  },
   footer: {
     rights: 'Усі права захищені.',
     registrationLabel: 'ЄДРПОУ',
   },
   a11y: {
     skipToContent: 'Перейти до вмісту',
-    switchLanguage: 'Змінити мову',
     openMenu: 'Відкрити меню',
     closeMenu: 'Закрити меню',
-    external: 'Відкриється у новій вкладці',
   },
   form: {
     required: '(обов’язково)',

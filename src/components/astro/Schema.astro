@@ -3,6 +3,9 @@ interface Props {
   schemas: object[];
 }
 const { schemas } = Astro.props;
+
+// Escape `<` so embedded data can't close the <script> tag or start a comment.
+const jsonLd = (obj: object) => JSON.stringify(obj).replace(/</g, '\\u003c');
 ---
 
-{schemas.map((s) => <script is:inline type="application/ld+json" set:html={JSON.stringify(s)} />)}
+{schemas.map((s) => <script is:inline type="application/ld+json" set:html={jsonLd(s)} />)}

@@ -4,10 +4,7 @@ import Container from '../../components/astro/Container.astro';
 import Section from '../../components/astro/Section.astro';
 import SectionHeader from '../../components/astro/SectionHeader.astro';
 import { roles } from '../../data/roles';
-import { roleStrings as rolesEn } from '../../i18n/en/roles';
-import { roleStrings as rolesUk } from '../../i18n/uk/roles';
-import { home as homeEn } from '../../i18n/en/pages/home';
-import { home as homeUk } from '../../i18n/uk/pages/home';
+import { homeTranslations, roleTranslations } from '../../i18n/translations';
 import { localizeUrl } from '../../i18n/utils';
 import type { Locale } from '../../i18n/types';
 
@@ -15,8 +12,8 @@ interface Props {
   locale: Locale;
 }
 const { locale } = Astro.props;
-const t = locale === 'uk' ? homeUk : homeEn;
-const rs = locale === 'uk' ? rolesUk : rolesEn;
+const t = homeTranslations[locale];
+const rs = roleTranslations[locale];
 ---
 
 <Section id="careers">

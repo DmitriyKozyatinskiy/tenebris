@@ -3,18 +3,15 @@ import Container from '../../components/astro/Container.astro';
 import Section from '../../components/astro/Section.astro';
 import SectionHeader from '../../components/astro/SectionHeader.astro';
 import { stats } from '../../data/stats';
-import { statStrings as statsEn } from '../../i18n/en/stats';
-import { statStrings as statsUk } from '../../i18n/uk/stats';
-import { home as homeEn } from '../../i18n/en/pages/home';
-import { home as homeUk } from '../../i18n/uk/pages/home';
+import { homeTranslations, statTranslations } from '../../i18n/translations';
 import type { Locale } from '../../i18n/types';
 
 interface Props {
   locale: Locale;
 }
 const { locale } = Astro.props;
-const t = locale === 'uk' ? homeUk : homeEn;
-const ss = locale === 'uk' ? statsUk : statsEn;
+const t = homeTranslations[locale];
+const ss = statTranslations[locale];
 ---
 
 <Section id="proof">

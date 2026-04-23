@@ -4,23 +4,19 @@ import Container from '../../components/astro/Container.astro';
 import Section from '../../components/astro/Section.astro';
 import SectionHeader from '../../components/astro/SectionHeader.astro';
 import { press } from '../../data/press';
-import { pressStrings as pressEn } from '../../i18n/en/press';
-import { pressStrings as pressUk } from '../../i18n/uk/press';
-import { home as homeEn } from '../../i18n/en/pages/home';
-import { home as homeUk } from '../../i18n/uk/pages/home';
+import { homeTranslations, pressTranslations } from '../../i18n/translations';
 import type { Locale } from '../../i18n/types';
 
 interface Props {
   locale: Locale;
 }
 const { locale } = Astro.props;
-const t = locale === 'uk' ? homeUk : homeEn;
-const p = locale === 'uk' ? pressUk : pressEn;
+const t = homeTranslations[locale];
+const p = pressTranslations[locale];
 
 function formatDate(iso: string, loc: Locale) {
-  const d = new Date(iso);
   try {
-    return d.toLocaleDateString(loc === 'uk' ? 'uk-UA' : 'en-US', {
+    return new Date(iso).toLocaleDateString(loc === 'uk' ? 'uk-UA' : 'en-US', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
@@ -45,17 +41,15 @@ function formatDate(iso: string, loc: Locale) {
             data-reveal
           >
             <div class="relative aspect-[16/9] w-full overflow-hidden bg-[--color-bg]">
-              <picture>
-                <img
-                  src={item.thumbnail}
-                  alt={p.pullquotes[item.id]}
-                  width="1600"
-                  height="900"
-                  loading="lazy"
-                  decoding="async"
-                  class="absolute inset-0 h-full w-full object-cover opacity-80 transition-opacity group-hover:opacity-100"
-                />
-              </picture>
+              <img
+                src={item.thumbnail}
+                alt={p.pullquotes[item.id]}
+                width="1600"
+                height="900"
+                loading="lazy"
+                decoding="async"
+                class="absolute inset-0 h-full w-full object-cover opacity-80 transition-opacity group-hover:opacity-100"
+              />
             </div>
             <div class="space-y-3 p-6 sm:p-8">
               <div class="flex items-center justify-between font-mono text-[11px] tracking-[0.2em] text-[--color-fg-muted] uppercase">

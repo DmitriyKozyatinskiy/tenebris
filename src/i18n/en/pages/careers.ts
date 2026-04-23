@@ -5,10 +5,6 @@ export interface CareersIndexTranslations {
     h1: string;
     intro: string;
   };
-  list: {
-    detailsLabel: string;
-    applyLabel: string;
-  };
 }
 
 export interface CareerDetailTranslations {
@@ -33,10 +29,6 @@ export const careersIndex: CareersIndexTranslations = {
     h1: 'Open roles.',
     intro:
       'Five roles across R&D, design, avionics, field service, and flight operations. You will work on systems flying real missions over Ukraine within weeks of joining.',
-  },
-  list: {
-    detailsLabel: 'Role details',
-    applyLabel: 'Apply',
   },
 };
 

@@ -12,10 +12,6 @@ export const careersIndex: CareersIndexTranslations = {
     intro:
       'П’ять позицій у R&D, проєктуванні, авіоніці, польовому сервісі та льотній експлуатації. Ти працюватимеш над системами, що виконують реальні місії над Україною вже через кілька тижнів після старту.',
   },
-  list: {
-    detailsLabel: 'Деталі позиції',
-    applyLabel: 'Відгукнутись',
-  },
 };
 
 export const careerDetail: CareerDetailTranslations = {

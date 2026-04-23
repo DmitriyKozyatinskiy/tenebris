@@ -1,20 +1,15 @@
 import { getLegalEntity } from '../i18n/entities';
 import type { Locale } from '../i18n/types';
 import { localeHtmlLang } from '../i18n/config';
-import { contactPeople, formRecipientEmail, publicInboxEmail } from '../data/contacts';
+import { contactPeople, publicInboxEmail } from '../data/contacts';
 import { getSameAs } from '../data/social';
-import { roles, type Role } from '../data/roles';
-import { roleStrings } from '../i18n/en/roles';
-import { roleStrings as roleStringsUk } from '../i18n/uk/roles';
+import { type Role } from '../data/roles';
+import { roleTranslations } from '../i18n/translations';
 import { press } from '../data/press';
 
 const SITE = 'https://tenebris.com.ua';
 const ORG_ID = `${SITE}/#organization`;
 const SITE_ID = `${SITE}/#website`;
-
-function getRoleStrings(locale: Locale) {
-  return locale === 'uk' ? roleStringsUk : roleStrings;
-}
 
 export function buildOrganization(locale: Locale) {
   const entity = getLegalEntity(locale);
@@ -85,7 +80,7 @@ export function buildBreadcrumb(items: Array<{ name: string; path: string }>, _l
 }
 
 export function buildJobPosting(role: Role, locale: Locale) {
-  const strings = getRoleStrings(locale)[role.slug];
+  const strings = roleTranslations[locale][role.slug];
   const description = [
     `<p>${strings.mission}</p>`,
     `<p><b>${strings.teamLabel}</b></p>`,
@@ -121,14 +116,6 @@ export function buildJobPosting(role: Role, locale: Locale) {
   };
 }
 
-export function buildJobListItem(role: Role, locale: Locale) {
-  return {
-    '@type': 'ListItem',
-    position: roles.findIndex((r) => r.slug === role.slug) + 1,
-    url: `${SITE}${locale === 'en' ? '' : '/uk'}/careers/${role.slug}/`,
-  };
-}
-
 export function buildPressItemList(locale: Locale) {
   return {
     '@context': 'https://schema.org',
@@ -158,5 +145,3 @@ export function buildPressItemList(locale: Locale) {
 export function buildBaseSchemas(locale: Locale): object[] {
   return [buildOrganization(locale), buildWebsite(locale)];
 }
-
-export { SITE, ORG_ID, SITE_ID, formRecipientEmail };

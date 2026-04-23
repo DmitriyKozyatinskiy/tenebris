@@ -4,26 +4,29 @@ import Container from '../../components/astro/Container.astro';
 import Section from '../../components/astro/Section.astro';
 import SectionHeader from '../../components/astro/SectionHeader.astro';
 import { contactPeople, formRecipientEmail, publicInboxEmail } from '../../data/contacts';
-import { home as homeEn } from '../../i18n/en/pages/home';
-import { home as homeUk } from '../../i18n/uk/pages/home';
+import { PURPOSES } from '../../data/purposes';
 import { commonTranslations } from '../../i18n/common';
+import { homeTranslations } from '../../i18n/translations';
 import type { Locale } from '../../i18n/types';
 
 interface Props {
   locale: Locale;
 }
 const { locale } = Astro.props;
-const t = locale === 'uk' ? homeUk : homeEn;
+const t = homeTranslations[locale];
 const common = commonTranslations[locale];
 const web3Key = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? 'YOUR_WEB3FORMS_ACCESS_KEY';
 ---
 
 <Section id="contact">
   <Container>
-    <SectionHeader eyebrow={t.contact.eyebrow} heading={t.contact.heading} intro={t.contact.intro} />
+    <SectionHeader
+      eyebrow={t.contact.eyebrow}
+      heading={t.contact.heading}
+      intro={t.contact.intro}
+    />
 
     <div class="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16">
-      <!-- FORM -->
       <form
         id="contact-form"
         method="POST"
@@ -31,19 +34,27 @@ const web3Key = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? 'YOUR_WEB3FORMS_ACCESS_K
         class="space-y-6"
         novalidate
         data-reveal
+        data-subject-map={JSON.stringify(t.contact.form.subjectByPurpose)}
       >
         <input type="hidden" name="access_key" value={web3Key} />
         <input type="hidden" name="email" value={formRecipientEmail} />
-        <input type="hidden" name="subject" id="form-subject" value={t.contact.form.subjectByPurpose.cooperation} />
+        <input
+          type="hidden"
+          name="subject"
+          id="form-subject"
+          value={t.contact.form.subjectByPurpose.cooperation}
+        />
         <input type="hidden" name="redirect" id="form-redirect" value="" />
         <input type="hidden" name="from_name" value="Tenebris · Contact Form" />
-        <!-- Honeypot -->
         <div class="hidden" aria-hidden="true">
           <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" />
         </div>
 
         <div>
-          <label for="name" class="mb-2 block font-mono text-xs tracking-[0.2em] text-[--color-fg-muted] uppercase">
+          <label
+            for="name"
+            class="mb-2 block font-mono text-xs tracking-[0.2em] text-[--color-fg-muted] uppercase"
+          >
             {t.contact.form.name} <span class="text-[--color-accent]" aria-hidden="true">*</span>
             <span class="sr-only">{common.form.required}</span>
           </label>
@@ -53,12 +64,15 @@ const web3Key = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? 'YOUR_WEB3FORMS_ACCESS_K
             type="text"
             required
             autocomplete="name"
-            class="w-full border border-[--color-border] bg-[--color-bg-raised] px-4 py-3 font-sans text-base text-[--color-fg] transition-colors focus:border-[--color-accent] focus:outline-none"
+            class="form-input"
           />
         </div>
 
         <div>
-          <label for="email" class="mb-2 block font-mono text-xs tracking-[0.2em] text-[--color-fg-muted] uppercase">
+          <label
+            for="email"
+            class="mb-2 block font-mono text-xs tracking-[0.2em] text-[--color-fg-muted] uppercase"
+          >
             {t.contact.form.email} <span class="text-[--color-accent]" aria-hidden="true">*</span>
             <span class="sr-only">{common.form.required}</span>
           </label>
@@ -68,12 +82,15 @@ const web3Key = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? 'YOUR_WEB3FORMS_ACCESS_K
             type="email"
             required
             autocomplete="email"
-            class="w-full border border-[--color-border] bg-[--color-bg-raised] px-4 py-3 font-sans text-base text-[--color-fg] transition-colors focus:border-[--color-accent] focus:outline-none"
+            class="form-input"
           />
         </div>
 
         <div>
-          <label for="organization" class="mb-2 block font-mono text-xs tracking-[0.2em] text-[--color-fg-muted] uppercase">
+          <label
+            for="organization"
+            class="mb-2 block font-mono text-xs tracking-[0.2em] text-[--color-fg-muted] uppercase"
+          >
             {t.contact.form.organization}
             <span class="ml-1 text-[--color-fg-dim]">({t.contact.form.organizationOptional})</span>
           </label>
@@ -82,7 +99,7 @@ const web3Key = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? 'YOUR_WEB3FORMS_ACCESS_K
             name="organization"
             type="text"
             autocomplete="organization"
-            class="w-full border border-[--color-border] bg-[--color-bg-raised] px-4 py-3 font-sans text-base text-[--color-fg] transition-colors focus:border-[--color-accent] focus:outline-none"
+            class="form-input"
           />
         </div>
 
@@ -92,7 +109,7 @@ const web3Key = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? 'YOUR_WEB3FORMS_ACCESS_K
           </legend>
           <div class="flex flex-wrap gap-x-6 gap-y-3">
             {
-              (['cooperation', 'employment', 'press', 'other'] as const).map((p, i) => (
+              PURPOSES.map((p, i) => (
                 <label class="flex items-center gap-2 font-sans text-sm text-[--color-fg]">
                   <input
                     type="radio"
@@ -110,7 +127,10 @@ const web3Key = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? 'YOUR_WEB3FORMS_ACCESS_K
         </fieldset>
 
         <div>
-          <label for="message" class="mb-2 block font-mono text-xs tracking-[0.2em] text-[--color-fg-muted] uppercase">
+          <label
+            for="message"
+            class="mb-2 block font-mono text-xs tracking-[0.2em] text-[--color-fg-muted] uppercase"
+          >
             {t.contact.form.message} <span class="text-[--color-accent]" aria-hidden="true">*</span>
             <span class="sr-only">{common.form.required}</span>
           </label>
@@ -119,8 +139,7 @@ const web3Key = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? 'YOUR_WEB3FORMS_ACCESS_K
             name="message"
             required
             rows="6"
-            class="w-full border border-[--color-border] bg-[--color-bg-raised] px-4 py-3 font-sans text-base text-[--color-fg] transition-colors focus:border-[--color-accent] focus:outline-none resize-y min-h-[140px]"
-          ></textarea>
+            class="form-input min-h-[140px] resize-y"></textarea>
         </div>
 
         <div
@@ -142,17 +161,8 @@ const web3Key = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? 'YOUR_WEB3FORMS_ACCESS_K
           {t.contact.form.submit}
           <Icon name="lucide:arrow-right" class="h-4 w-4" />
         </button>
-
-        <!-- Subject-by-purpose data for JS pickup -->
-        <script
-          is:inline
-          type="application/json"
-          id="subject-map"
-          set:html={JSON.stringify(t.contact.form.subjectByPurpose)}
-        />
       </form>
 
-      <!-- DIRECT CONTACTS -->
       <div class="space-y-8" data-reveal>
         <div>
           <div class="font-mono text-xs tracking-[0.2em] text-[--color-accent] uppercase">
@@ -208,34 +218,24 @@ const web3Key = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? 'YOUR_WEB3FORMS_ACCESS_K
 </Section>
 
 <script>
-  interface SubjectMap {
-    cooperation: string;
-    employment: string;
-    press: string;
-    other: string;
-  }
   const form = document.getElementById('contact-form') as HTMLFormElement | null;
-  const subjectInput = document.getElementById('form-subject') as HTMLInputElement | null;
-  const redirectInput = document.getElementById('form-redirect') as HTMLInputElement | null;
-  const submitBtn = document.getElementById('form-submit') as HTMLButtonElement | null;
-  const messageEl = document.getElementById('form-message') as HTMLElement | null;
-  const subjectMapEl = document.getElementById('subject-map') as HTMLScriptElement | null;
-  const radios = document.querySelectorAll<HTMLInputElement>('[data-purpose-radio]');
+  if (!form) throw new Error('contact-form missing');
 
-  if (form && subjectInput && subjectMapEl) {
-    let subjects: SubjectMap | null = null;
-    try {
-      subjects = JSON.parse(subjectMapEl.textContent || '{}') as SubjectMap;
-    } catch (e) {
-      subjects = null;
-    }
-    radios.forEach((radio) => {
-      radio.addEventListener('change', () => {
-        const key = radio.value as keyof SubjectMap;
-        if (subjects && subjects[key]) subjectInput.value = subjects[key];
-      });
+  const subjectInput = form.querySelector<HTMLInputElement>('#form-subject');
+  const redirectInput = form.querySelector<HTMLInputElement>('#form-redirect');
+  const submitBtn = form.querySelector<HTMLButtonElement>('#form-submit');
+  const messageEl = form.querySelector<HTMLElement>('#form-message');
+
+  const raw = form.dataset.subjectMap;
+  const subjects = raw ? (JSON.parse(raw) as Record<string, string>) : null;
+
+  form.querySelectorAll<HTMLInputElement>('[data-purpose-radio]').forEach((radio) => {
+    radio.addEventListener('change', () => {
+      if (subjectInput && subjects && subjects[radio.value]) {
+        subjectInput.value = subjects[radio.value];
+      }
     });
-  }
+  });
 
   if (redirectInput) {
     redirectInput.value = `${window.location.origin}${window.location.pathname}?submitted=1#contact`;
@@ -252,11 +252,10 @@ const web3Key = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? 'YOUR_WEB3FORMS_ACCESS_K
     history.replaceState({}, '', u.toString());
   }
 
-  if (form && submitBtn) {
+  if (submitBtn) {
     form.addEventListener('submit', () => {
       submitBtn.disabled = true;
-      const sendingText = submitBtn.dataset.sendingText || 'Sending…';
-      submitBtn.textContent = sendingText;
+      submitBtn.textContent = submitBtn.dataset.sendingText || 'Sending…';
     });
   }
 </script>

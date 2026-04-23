@@ -6,12 +6,8 @@ import Section from '../components/astro/Section.astro';
 import Breadcrumb from '../components/astro/Breadcrumb.astro';
 import Eyebrow from '../components/astro/Eyebrow.astro';
 import { getRole } from '../data/roles';
-import { roleStrings as rolesEn } from '../i18n/en/roles';
-import { roleStrings as rolesUk } from '../i18n/uk/roles';
-import { careerDetail as careerDetailEn } from '../i18n/en/pages/careers';
-import { careerDetail as careerDetailUk } from '../i18n/uk/pages/careers';
+import { careerDetailTranslations, roleTranslations } from '../i18n/translations';
 import { commonTranslations } from '../i18n/common';
-import { defaultLocale } from '../i18n/config';
 import { localizeUrl, toLocale } from '../i18n/utils';
 import { buildBreadcrumb, buildJobPosting } from '../utils/schema';
 
@@ -19,14 +15,14 @@ interface Props {
   locale?: string;
   slug: string;
 }
-const { locale: rawLocale = defaultLocale, slug } = Astro.props;
-const locale = toLocale(rawLocale);
+const { slug } = Astro.props;
+const locale = toLocale(Astro.props.locale);
 const role = getRole(slug);
 if (!role) {
   return Astro.redirect('/404/');
 }
-const rs = locale === 'uk' ? rolesUk : rolesEn;
-const detail = locale === 'uk' ? careerDetailUk : careerDetailEn;
+const rs = roleTranslations[locale];
+const detail = careerDetailTranslations[locale];
 const common = commonTranslations[locale];
 const r = rs[role.slug];
 const meta = detail.meta(r.title);
@@ -36,15 +32,14 @@ const crumbs = [
   { name: common.breadcrumbs.careers, path: localizeUrl('/careers/', locale) },
   { name: r.title, path: localizeUrl(`/careers/${role.slug}/`, locale) },
 ];
-const crumbSchema = buildBreadcrumb(crumbs, locale);
-const jobPosting = buildJobPosting(role, locale);
+const schemas = [buildBreadcrumb(crumbs, locale), buildJobPosting(role, locale)];
 ---
 
 <Layout
   title={meta.title}
   description={meta.description}
   locale={locale}
-  schemas={[crumbSchema, jobPosting]}
+  schemas={schemas}
 >
   <Section border={false}>
     <Container>
@@ -72,22 +67,16 @@ const jobPosting = buildJobPosting(role, locale);
       <div class="mt-16 grid gap-16 lg:grid-cols-[2fr_1fr]">
         <div class="space-y-12">
           <div data-reveal>
-            <h2
-              class="font-mono text-xs tracking-[0.2em] text-[--color-accent] uppercase"
-            >
+            <h2 class="font-mono text-xs tracking-[0.2em] text-[--color-accent] uppercase">
               {detail.missionHeading}
             </h2>
-            <p
-              class="font-display mt-4 text-xl leading-relaxed text-[--color-fg] sm:text-2xl"
-            >
+            <p class="font-display mt-4 text-xl leading-relaxed text-[--color-fg] sm:text-2xl">
               {r.mission}
             </p>
           </div>
 
           <div data-reveal>
-            <h2
-              class="font-mono text-xs tracking-[0.2em] text-[--color-accent] uppercase"
-            >
+            <h2 class="font-mono text-xs tracking-[0.2em] text-[--color-accent] uppercase">
               {detail.responsibilitiesHeading}
             </h2>
             <ul class="mt-4 space-y-3">
@@ -106,9 +95,7 @@ const jobPosting = buildJobPosting(role, locale);
           </div>
 
           <div data-reveal>
-            <h2
-              class="font-mono text-xs tracking-[0.2em] text-[--color-accent] uppercase"
-            >
+            <h2 class="font-mono text-xs tracking-[0.2em] text-[--color-accent] uppercase">
               {detail.requirementsHeading}
             </h2>
             <ul class="mt-4 space-y-3">
@@ -150,9 +137,7 @@ const jobPosting = buildJobPosting(role, locale);
 
         <aside class="space-y-6 lg:sticky lg:top-20 lg:self-start" data-reveal>
           <div class="border border-[--color-border] bg-[--color-bg-raised] p-6 sm:p-8">
-            <h2
-              class="font-mono text-xs tracking-[0.2em] text-[--color-accent] uppercase"
-            >
+            <h2 class="font-mono text-xs tracking-[0.2em] text-[--color-accent] uppercase">
               {detail.applyHeading}
             </h2>
             <p class="mt-4 text-sm leading-relaxed text-[--color-fg-muted] sm:text-base">
@@ -169,17 +154,13 @@ const jobPosting = buildJobPosting(role, locale);
 
           <dl class="space-y-4 border-t border-[--color-border] pt-6">
             <div>
-              <dt
-                class="font-mono text-[11px] tracking-[0.2em] text-[--color-fg-muted] uppercase"
-              >
+              <dt class="font-mono text-[11px] tracking-[0.2em] text-[--color-fg-muted] uppercase">
                 {r.locationLabel}
               </dt>
               <dd class="mt-1 font-mono text-sm text-[--color-fg]">{role.baseLocation}</dd>
             </div>
             <div>
-              <dt
-                class="font-mono text-[11px] tracking-[0.2em] text-[--color-fg-muted] uppercase"
-              >
+              <dt class="font-mono text-[11px] tracking-[0.2em] text-[--color-fg-muted] uppercase">
                 {r.employmentLabel}
               </dt>
               <dd class="mt-1 font-mono text-sm text-[--color-fg]">

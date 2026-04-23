@@ -3,16 +3,16 @@ import { Icon } from 'astro-icon/components';
 import Container from '../../components/astro/Container.astro';
 import Section from '../../components/astro/Section.astro';
 import SectionHeader from '../../components/astro/SectionHeader.astro';
+import Photo from '../../components/astro/Photo.astro';
 import { localizeUrl } from '../../i18n/utils';
-import { home as homeEn } from '../../i18n/en/pages/home';
-import { home as homeUk } from '../../i18n/uk/pages/home';
+import { homeTranslations } from '../../i18n/translations';
 import type { Locale } from '../../i18n/types';
 
 interface Props {
   locale: Locale;
 }
 const { locale } = Astro.props;
-const t = locale === 'uk' ? homeUk : homeEn;
+const t = homeTranslations[locale];
 ---
 
 <Section id="training">
@@ -36,10 +36,7 @@ const t = locale === 'uk' ? homeUk : homeEn;
             ))
           }
         </ul>
-        <a
-          href={`${localizeUrl('/#contact', locale)}?subject=training`}
-          class="btn-primary mt-10"
-        >
+        <a href={`${localizeUrl('/#contact', locale)}?subject=training`} class="btn-primary mt-10">
           {t.training.cta}
           <Icon name="lucide:arrow-right" class="h-4 w-4" />
         </a>
@@ -56,22 +53,13 @@ const t = locale === 'uk' ? homeUk : homeEn;
             aria-hidden="true"
           >
           </div>
-          <picture>
-            <source
-              type="image/avif"
-              srcset="/photos/420480_12_new_960x380_0-800.avif 800w, /photos/420480_12_new_960x380_0-1600.avif 1600w"
-              sizes="(min-width: 1024px) 40vw, 100vw"
-            />
-            <img
-              src="/photos/420480_12_new_960x380_0-1600.webp"
-              alt={t.training.imgAlt}
-              width="1600"
-              height="633"
-              loading="lazy"
-              decoding="async"
-              class="block h-auto w-full border border-[--color-border] bg-[--color-bg-raised] object-cover"
-            />
-          </picture>
+          <Photo
+            baseName="420480_12_new_960x380_0"
+            alt={t.training.imgAlt}
+            width={1600}
+            height={633}
+            sizes="(min-width: 1024px) 40vw, 100vw"
+          />
         </div>
       </div>
     </div>
